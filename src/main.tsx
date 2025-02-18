@@ -5,6 +5,7 @@ import "./index.css";
 import Auth_Layout from "./Layout/Auth_Layout";
 import Login from "./Authentication/Auth_component/Login";
 import Signup from "./Authentication/Auth_component/Signup";
+import Main_Layout from "./Layout/Main_Layout";
 
 // Define a simple route using createBrowserRouter
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
     ],
+  },
+  {
+    path: "/home",
+    element: <Main_Layout />,
   },
 ]);
 
