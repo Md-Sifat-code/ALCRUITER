@@ -13,7 +13,7 @@ import {
 const Navbar: React.FC = () => {
   return (
     <section className="bg-white">
-      <div className="container mx-auto max-w-6xl flex flex-row justify-between items-center py-1 px-6">
+      <div className="container mx-auto max-w-7xl flex flex-row justify-between items-center py-1 px-6">
         {/* Left section: Logo and Searchbar */}
         <div className="flex items-center space-x-4">
           <p className="bg-blue-900 p-2 text-white font-bold mr-1">AL</p>
@@ -32,7 +32,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Middle section: Navigation */}
-        <div className="flex space-x-6">
+        <div className="flex  space-x-6">
           <NavLink
             to="/home" // Specify the link for Home
             className={({ isActive }) =>
@@ -92,11 +92,10 @@ const Navbar: React.FC = () => {
             <FaBell size={24} />
             <span className="text-sm mt-1">Notifications</span>
           </NavLink>
-        </div>
-
-        {/* Right section: Profile Icon */}
-        <div className="flex items-center">
-          <FaUserAlt size={24} />
+          {/* Right section: Profile Icon */}
+          <div className="flex bg-blue-800 p-4 rounded-b-full items-center">
+            <FaUserAlt className="text-white" size={24} />
+          </div>
         </div>
       </div>
     </section>
