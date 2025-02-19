@@ -8,6 +8,8 @@ import Signup from "./Authentication/Auth_component/Signup";
 import Main_Layout from "./Layout/Main_Layout";
 import Home from "./Components/Home";
 import Posts from "./Components/Posts";
+import Candidate_profile from "./Pages/Candidate_profile";
+import Recruiter_profile from "./Pages/Recruiter_profile";
 
 // Define a simple route using createBrowserRouter
 const router = createBrowserRouter([
@@ -38,6 +40,14 @@ const router = createBrowserRouter([
             element: <Posts />,
           },
         ],
+      },
+      {
+        path: "/home/profile/candidate",
+        element: <Candidate_profile />,
+      },
+      {
+        path: "/home/profile/recruiter",
+        element: <Recruiter_profile />,
       },
     ],
   },
