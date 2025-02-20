@@ -2,14 +2,23 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSadTear } from "react-icons/fa";
+import profilepic from "/profilepic.png"; // Static imported image (used as fallback)
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [profileImage, setProfileImage] = useState<File | null>(null); // State for profile image
   const [isSuccess, setIsSuccess] = useState(false); // State for success modal
   const [showErrorModal, setShowErrorModal] = useState(false); // State for error modal
   const navigate = useNavigate(); // Hook to navigate to another route
+
+  // Handle profile image change (if user uploads their own image)
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setProfileImage(e.target.files[0]);
+    }
+  };
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -17,6 +26,17 @@ const Signup: React.FC = () => {
     formData.append("username", username);
     formData.append("email", email);
     formData.append("password", password);
+
+    // If a profile image is selected, append it to FormData
+    if (profileImage) {
+      formData.append("profilpic", profileImage);
+    } else {
+      // If no profile image is selected, append the default image
+      const defaultProfilePic = new File([profilepic], "profilepic.png", {
+        type: "image/png",
+      });
+      formData.append("profilpic", defaultProfilePic);
+    }
 
     try {
       const response = await fetch(
@@ -63,7 +83,6 @@ const Signup: React.FC = () => {
       </h1>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
         <h2 className="text-2xl font-semibold text-center mb-6">Signup</h2>
-        {/* Removed onSubmit from form */}
         <form>
           {/* Username input */}
           <div className="mb-4">
@@ -85,7 +104,7 @@ const Signup: React.FC = () => {
               Email
             </label>
             <input
-              type="text" // Changed to 'email' for proper validation
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -99,7 +118,7 @@ const Signup: React.FC = () => {
               Password
             </label>
             <input
-              type="text" // Changed to 'password' for secure input
+              type="text"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -107,10 +126,23 @@ const Signup: React.FC = () => {
             />
           </div>
 
+          {/* Profile image input */}
+          <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700">
+              Profile Picture
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+
           {/* Submit Button */}
           <button
-            type="button" // Changed to 'button' so it doesn't trigger form submit
-            onClick={handleSubmit} // Trigger handleSubmit on button click
+            type="button"
+            onClick={handleSubmit}
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
           >
             Sign Up

@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
               </h2>
               <div className="flex justify-around mb-4">
                 <Link
-                  to={"/home/profile/candidate"} // Replace this with actual logic
+                  to={"/home/profile/info/candidate"} // Replace this with actual logic
                   className="px-8 py-4 text-blue-800 w-28 flex flex-col justify-center items-center"
                   onClick={closeModal} // Close modal when the link is clicked
                 >
@@ -118,7 +118,7 @@ const Navbar: React.FC = () => {
                   Candidate
                 </Link>
                 <Link
-                  to={"/home/profile/recruiter"} // Replace this with actual logic
+                  to={"/home/profile/info/recruiter"} // Replace this with actual logic
                   className="px-8 py-4 text-blue-800 w-28 flex flex-col justify-center items-center"
                   onClick={closeModal} // Close modal when the link is clicked
                 >

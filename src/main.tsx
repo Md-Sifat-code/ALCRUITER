@@ -10,6 +10,10 @@ import Home from "./Components/Home";
 import Posts from "./Components/Posts";
 import Candidate_profile from "./Pages/Candidate_profile";
 import Recruiter_profile from "./Pages/Recruiter_profile";
+import Candidate from "./Pages/Candidate";
+import Recruiter from "./Pages/Recruiter";
+import { LoginProvider } from "./Context/LoginContext";
+import { UserProvider } from "./Context/UserContext";
 
 // Define a simple route using createBrowserRouter
 const router = createBrowserRouter([
@@ -42,12 +46,20 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/home/profile/candidate",
+        path: "/home/profile/info/candidate",
         element: <Candidate_profile />,
       },
       {
-        path: "/home/profile/recruiter",
+        path: "/home/profile/info/recruiter",
         element: <Recruiter_profile />,
+      },
+      {
+        path: "/home/profile/candidate",
+        element: <Candidate />,
+      },
+      {
+        path: "/home/profile/recruiter",
+        element: <Recruiter />,
       },
     ],
   },
@@ -59,7 +71,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <LoginProvider>
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
+      </LoginProvider>
     </React.StrictMode>
   );
 }
