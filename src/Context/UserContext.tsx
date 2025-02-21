@@ -7,7 +7,7 @@ interface User {
   email: string;
   profilpic: string;
   candidate: any | null;
-  recruiter: any | null;
+  recruter: any | null;
   username: string;
   choose: any | null;
 }

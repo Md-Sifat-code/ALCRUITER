@@ -10,6 +10,7 @@ import {
   FaFileAlt,
 } from "react-icons/fa";
 import { FaHandshakeSimpleSlash } from "react-icons/fa6";
+import { useUser } from "../Context/UserContext";
 
 // Define the form data type
 interface FormData {
@@ -29,6 +30,8 @@ interface FormData {
 
 const CandidateProfile: React.FC = () => {
   // Initialize state with a specific type
+  const { user } = useUser(); // Access the user context
+
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phoneNumber: "",
@@ -68,8 +71,13 @@ const CandidateProfile: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      console.error("User not found");
+      return; // Ensure that user is available
+    }
 
     const formDataToSubmit = new FormData();
+    formDataToSubmit.append("userId", user.id.toString());
     formDataToSubmit.append("fullName", formData.fullName);
     formDataToSubmit.append("phoneNumber", formData.phoneNumber);
     formDataToSubmit.append("location", formData.location);
@@ -326,7 +334,7 @@ const CandidateProfile: React.FC = () => {
         <div className="flex justify-center mt-8">
           <button
             type="submit"
-            className="w-full md:w-1/4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full  px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>
