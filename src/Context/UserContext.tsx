@@ -1,13 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios"; // No need for AxiosResponse import
+import axios from "axios";
 
-// Define the structure of the user
+// Define the structure of the updated user
 interface User {
   id: number;
   email: string;
-  roles: string[];
-  username: string;
   profilpic: string;
+  candidate: any | null;
+  recruiter: any | null;
+  username: string;
+  choose: any | null;
 }
 
 interface UserContextType {

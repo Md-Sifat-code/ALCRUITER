@@ -7,7 +7,7 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLoading, error } = useLogin();
-  const { fetchUserDetails } = useUser();
+  const { fetchUserDetails, user } = useUser();
   const navigate = useNavigate(); // Initialize the navigate hook
 
   const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -18,9 +18,14 @@ const Login: React.FC = () => {
 
       if (loggedInUsername) {
         // After successful login, fetch user details
-        fetchUserDetails(loggedInUsername);
-        // Redirect to the home page
-        navigate("/home"); // Navigate to /home
+        await fetchUserDetails(loggedInUsername);
+        console.log(user);
+        // Check if 'choose' is null or not and redirect accordingly
+        if (user?.choose === null) {
+          navigate("/choose"); // Navigate to /choose if choose is null
+        } else {
+          navigate("/home"); // Navigate to /home if choose is not null
+        }
       } else {
         console.log("Login failed. No user returned.");
       }
@@ -28,7 +33,6 @@ const Login: React.FC = () => {
       console.error("Login failed", err);
     }
   };
-
   return (
     <div className="min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-50">
       <h1 className="flex flex-row items-center">

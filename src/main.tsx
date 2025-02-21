@@ -14,8 +14,9 @@ import Candidate from "./Pages/Candidate";
 import Recruiter from "./Pages/Recruiter";
 import { LoginProvider } from "./Context/LoginContext";
 import { UserProvider } from "./Context/UserContext";
+import Choose from "./Authentication/Auth_component/Choose";
 
-// Define a simple route using createBrowserRouter
+// Define the router with routes
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <Signup />,
+      },
+      {
+        path: "/choose",
+        element: <Choose />,
       },
     ],
   },
@@ -65,7 +70,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-// Get the root element and ensure it's typed properly
+// Ensure the RouterProvider wraps the entire app, including context providers
 const rootElement = document.getElementById("root");
 
 if (rootElement) {

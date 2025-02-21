@@ -1,35 +1,17 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
+import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
 import {
   FaHome,
-  FaUserFriends,
   FaBriefcase,
-  FaEnvelope,
   FaBell,
   FaUserAlt,
   FaSearch,
-  FaUserInjured, // Importing the search icon
 } from "react-icons/fa"; // Importing icons from react-icons
 import { PiStudentFill } from "react-icons/pi";
+import { useUser } from "../Context/UserContext"; // Importing useUser to access user context
 
 const Navbar: React.FC = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State to manage dropdown visibility
-  const [modalOpen, setModalOpen] = useState(false); // State to manage modal visibility
-
-  // Function to toggle the dropdown
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
-
-  // Function to open the modal
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  // Function to close the modal
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  const { user } = useUser(); // Accessing the user context
 
   return (
     <section className="bg-white">
@@ -52,7 +34,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Middle section: Navigation */}
-        <div className="flex  space-x-6">
+        <div className="flex space-x-6">
           <NavLink
             to="/home" // Specify the link for Home
             className={({ isActive }) =>
@@ -88,56 +70,23 @@ const Navbar: React.FC = () => {
             <FaBell size={24} />
             <span className="text-sm mt-1">Notifications</span>
           </NavLink>
+
           {/* Right section: Profile Icon */}
           <div className="relative">
-            <div
-              className="flex bg-blue-800 p-4 rounded-b-full items-center cursor-pointer"
-              onClick={openModal} // Open modal on click
-            >
-              <FaUserAlt className="text-white" size={24} />
+            <div className="flex bg-blue-800 p-4 rounded-b-full items-center cursor-pointer">
+              {user ? (
+                <img
+                  src={user.profilpic} // Use the profile picture from the user context
+                  alt="Profile"
+                  className="w-8 h-8 rounded-full"
+                />
+              ) : (
+                <FaUserAlt className="text-white" size={24} />
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Modal */}
-      {modalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-transparent">
-          <div className="modal modal-open ">
-            <div className="modal-box bg-white px-12 py-10  w-80">
-              <h2 className="text-2xl font-semibold text-center mb-4">
-                Select Your Role
-              </h2>
-              <div className="flex justify-around mb-4">
-                <Link
-                  to={"/home/profile/info/candidate"} // Replace this with actual logic
-                  className="px-8 py-4 text-blue-800 w-28 flex flex-col justify-center items-center"
-                  onClick={closeModal} // Close modal when the link is clicked
-                >
-                  <FaUserInjured />
-                  Candidate
-                </Link>
-                <Link
-                  to={"/home/profile/info/recruiter"} // Replace this with actual logic
-                  className="px-8 py-4 text-blue-800 w-28 flex flex-col justify-center items-center"
-                  onClick={closeModal} // Close modal when the link is clicked
-                >
-                  <PiStudentFill />
-                  Recruiter
-                </Link>
-              </div>
-              <div className="modal-action">
-                <button
-                  onClick={closeModal}
-                  className="py-3 bg-blue-800 w-full text-white font-bold"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FaUser,
   FaPhone,
@@ -11,8 +11,25 @@ import {
 } from "react-icons/fa";
 import { FaHandshakeSimpleSlash } from "react-icons/fa6";
 
+// Define the form data type
+interface FormData {
+  fullName: string;
+  phoneNumber: string;
+  location: string;
+  skills: string;
+  language: string;
+  portfolioLinks: string;
+  preferedPosition: string;
+  yearsOfExperience: string;
+  coverPic: File | null;
+  educationalQualifications: string;
+  pastExperience: string;
+  cv: File | null;
+}
+
 const CandidateProfile: React.FC = () => {
-  const [formData, setFormData] = useState({
+  // Initialize state with a specific type
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phoneNumber: "",
     location: "",
@@ -21,49 +38,75 @@ const CandidateProfile: React.FC = () => {
     portfolioLinks: "",
     preferedPosition: "",
     yearsOfExperience: "",
-    coverPic: "",
+    coverPic: null,
     educationalQualifications: "",
     pastExperience: "",
-    cv: "",
-    user: {
-      id: 0,
-      roles: [{ id: 2, roleType: "candidate" }],
-      email: "",
-      username: "",
-      profilePic: "",
-    },
+    cv: null,
   });
 
-  useEffect(() => {
-    const username = sessionStorage.getItem("username");
-    const email = sessionStorage.getItem("email");
-
-    if (username && email) {
-      setFormData((prevData) => ({
-        ...prevData,
-        user: {
-          ...prevData.user,
-          username,
-          email,
-        },
-      }));
-    }
-  }, []);
-
+  // Handle text input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name as keyof FormData]: value,
     }));
+  };
+
+  // Handle file input changes (coverPic, cv)
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name as keyof FormData]: files[0],
+      }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log(formData);
+
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("fullName", formData.fullName);
+    formDataToSubmit.append("phoneNumber", formData.phoneNumber);
+    formDataToSubmit.append("location", formData.location);
+    formDataToSubmit.append("skills", formData.skills);
+    formDataToSubmit.append("language", formData.language);
+    formDataToSubmit.append("portfolioLinks", formData.portfolioLinks);
+    formDataToSubmit.append("preferedPosition", formData.preferedPosition);
+    formDataToSubmit.append("yearsOfExperience", formData.yearsOfExperience);
+    if (formData.coverPic)
+      formDataToSubmit.append("coverPic", formData.coverPic);
+    formDataToSubmit.append(
+      "educationalQualifications",
+      formData.educationalQualifications
+    );
+    formDataToSubmit.append("pastExperience", formData.pastExperience);
+    if (formData.cv) formDataToSubmit.append("cv", formData.cv);
+
+    fetch("https://chakrihub-1.onrender.com/api/candidates/add", {
+      method: "POST",
+      body: formDataToSubmit,
+    })
+      .then(async (response) => {
+        // Check if response is OK (status code between 200-299)
+        if (!response.ok) {
+          const text = await response.text(); // Read response as text if not OK
+          throw new Error(
+            `HTTP error! Status: ${response.status}, Response: ${text}`
+          );
+        }
+
+        // Read the plain text response
+        const responseText = await response.text();
+        console.log("Form submitted successfully:", responseText); // Log the plain text response
+      })
+      .catch((error) => {
+        console.error("Error submitting form:", error);
+      });
   };
 
   return (
@@ -249,42 +292,36 @@ const CandidateProfile: React.FC = () => {
           <FaFileAlt className="text-gray-500" />
           <div className="w-full">
             <label htmlFor="cv" className="block font-semibold text-gray-700">
-              CV URL
+              CV
             </label>
             <input
-              type="text"
+              type="file"
               id="cv"
               name="cv"
-              value={formData.cv}
-              onChange={handleChange}
+              onChange={handleFileChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
 
-        {/* Hidden fields */}
-        <input type="hidden" name="user.id" value={formData.user.id} />
-        <input
-          type="hidden"
-          name="user.roles[0].id"
-          value={formData.user.roles[0].id}
-        />
-        <input
-          type="hidden"
-          name="user.roles[0].roleType"
-          value={formData.user.roles[0].roleType}
-        />
-        <input
-          type="hidden"
-          name="user.username"
-          value={formData.user.username}
-        />
-        <input type="hidden" name="user.email" value={formData.user.email} />
-        <input
-          type="hidden"
-          name="user.profilePic"
-          value={formData.user.profilePic}
-        />
+        <div className="flex items-center space-x-3">
+          <FaFileAlt className="text-gray-500" />
+          <div className="w-full">
+            <label
+              htmlFor="coverPic"
+              className="block font-semibold text-gray-700"
+            >
+              Cover Picture
+            </label>
+            <input
+              type="file"
+              id="coverPic"
+              name="coverPic"
+              onChange={handleFileChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
 
         <div className="flex justify-center mt-8">
           <button
