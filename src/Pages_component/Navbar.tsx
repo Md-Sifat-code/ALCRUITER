@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom"; // Import NavLink from react-router-dom
+import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import {
   FaHome,
   FaBriefcase,
@@ -7,11 +7,33 @@ import {
   FaUserAlt,
   FaSearch,
 } from "react-icons/fa"; // Importing icons from react-icons
-import { PiStudentFill } from "react-icons/pi";
 import { useUser } from "../Context/UserContext"; // Importing useUser to access user context
 
 const Navbar: React.FC = () => {
-  const { user } = useUser(); // Accessing the user context
+  const { user, logout } = useUser(); // Accessing the user context and logout function
+  const navigate = useNavigate(); // Hook to programmatically navigate
+
+  // State to toggle the dropdown menu visibility
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  // Handle logout
+  const handleLogout = () => {
+    // Clear everything from sessionStorage
+    sessionStorage.clear();
+    // Clear user data from the context
+    logout(); // Call the logout function from UserContext
+    // Navigate to the home page
+    navigate("/");
+  };
+
+  // Handle profile navigation based on user choice (candidate/recruiter)
+  const handleProfileNavigation = () => {
+    if (user?.choose === "candidate") {
+      navigate("/home/profile/candidate");
+    } else if (user?.choose === "recruter") {
+      navigate("/home/profile/recruiter");
+    }
+  };
 
   return (
     <section className="bg-white">
@@ -71,9 +93,12 @@ const Navbar: React.FC = () => {
             <span className="text-sm mt-1">Notifications</span>
           </NavLink>
 
-          {/* Right section: Profile Icon */}
+          {/* Right section: Profile Icon and Dropdown */}
           <div className="relative">
-            <div className="flex bg-blue-800 p-4 rounded-b-full items-center cursor-pointer">
+            <div
+              className="flex bg-blue-800 p-4 rounded-b-full items-center cursor-pointer"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown
+            >
               {user ? (
                 <img
                   src={user.profilpic} // Use the profile picture from the user context
@@ -84,6 +109,24 @@ const Navbar: React.FC = () => {
                 <FaUserAlt className="text-white" size={24} />
               )}
             </div>
+
+            {/* Dropdown Menu */}
+            {isDropdownOpen && (
+              <div className="absolute z-10 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <button
+                  onClick={handleProfileNavigation}
+                  className="block w-full text-left p-2 text-blue-600 hover:bg-gray-100"
+                >
+                  Profile
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left p-2 text-red-600 hover:bg-gray-100 rounded-b-lg"
+                >
+                  Logout
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

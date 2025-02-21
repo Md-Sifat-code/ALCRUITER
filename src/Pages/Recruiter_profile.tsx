@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FaUser,
   FaBuilding,
@@ -7,39 +7,28 @@ import {
   FaFileAlt,
   FaImage,
 } from "react-icons/fa";
+import { useUser } from "../Context/UserContext"; // Importing the UserContext
+
+interface FormData {
+  name: string;
+  coverPhoto: File | null;
+  companyName: string;
+  officeLocation: string;
+  companyDescription: string;
+  industryType: string;
+}
 
 const RecruiterProfile: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
-    coverPhoto: "",
+    coverPhoto: null,
     companyName: "",
     officeLocation: "",
     companyDescription: "",
     industryType: "",
-    user: {
-      id: 0,
-      roles: [{ id: 2, roleType: "recruiter" }],
-      email: "",
-      username: "",
-      profilePic: "",
-    },
   });
 
-  useEffect(() => {
-    const username = sessionStorage.getItem("username");
-    const email = sessionStorage.getItem("email");
-
-    if (username && email) {
-      setFormData((prevData) => ({
-        ...prevData,
-        user: {
-          ...prevData.user,
-          username,
-          email,
-        },
-      }));
-    }
-  }, []);
+  const { user } = useUser(); // Get user context
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -51,10 +40,48 @@ const RecruiterProfile: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+    if (files && files[0]) {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name as keyof FormData]: files[0], // Storing the file in the state
+      }));
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log(formData);
+    if (!user) {
+      console.error("User not found");
+      return;
+    }
+
+    // Handle form submission logic (e.g., API call)
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("coverPhoto", formData.coverPhoto || "");
+    formDataToSend.append("companyName", formData.companyName);
+    formDataToSend.append("officeLocation", formData.officeLocation);
+    formDataToSend.append("companyDescription", formData.companyDescription);
+    formDataToSend.append("industryType", formData.industryType);
+    formDataToSend.append("userId", String(user.id)); // Adding userId from context
+
+    const response = await fetch(
+      "https://chakrihub-1.onrender.com/api/recruiters/add",
+      {
+        method: "POST",
+        body: formDataToSend,
+      }
+    );
+
+    if (response.ok) {
+      // Handle successful form submission (e.g., success message)
+      console.log("Recruiter profile submitted successfully!");
+    } else {
+      // Handle error (e.g., show error message)
+      console.error("Failed to submit recruiter profile");
+    }
   };
 
   return (
@@ -92,14 +119,13 @@ const RecruiterProfile: React.FC = () => {
                 htmlFor="coverPhoto"
                 className="block font-semibold text-gray-700"
               >
-                Cover Photo URL
+                Cover Photo
               </label>
               <input
-                type="text"
+                type="file"
                 id="coverPhoto"
                 name="coverPhoto"
-                value={formData.coverPhoto}
-                onChange={handleChange}
+                onChange={handleFileChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -190,30 +216,6 @@ const RecruiterProfile: React.FC = () => {
             />
           </div>
         </div>
-
-        {/* Hidden fields */}
-        <input type="hidden" name="user.id" value={formData.user.id} />
-        <input
-          type="hidden"
-          name="user.roles[0].id"
-          value={formData.user.roles[0].id}
-        />
-        <input
-          type="hidden"
-          name="user.roles[0].roleType"
-          value={formData.user.roles[0].roleType}
-        />
-        <input
-          type="hidden"
-          name="user.username"
-          value={formData.user.username}
-        />
-        <input type="hidden" name="user.email" value={formData.user.email} />
-        <input
-          type="hidden"
-          name="user.profilePic"
-          value={formData.user.profilePic}
-        />
 
         <div className="flex justify-center mt-8">
           <button

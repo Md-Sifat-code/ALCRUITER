@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLogin } from "../../Context/LoginContext";
 import { useUser } from "../../Context/UserContext";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
@@ -19,13 +19,6 @@ const Login: React.FC = () => {
       if (loggedInUsername) {
         // After successful login, fetch user details
         await fetchUserDetails(loggedInUsername);
-        console.log(user);
-        // Check if 'choose' is null or not and redirect accordingly
-        if (user?.choose === null) {
-          navigate("/choose"); // Navigate to /choose if choose is null
-        } else {
-          navigate("/home"); // Navigate to /home if choose is not null
-        }
       } else {
         console.log("Login failed. No user returned.");
       }
@@ -33,6 +26,21 @@ const Login: React.FC = () => {
       console.error("Login failed", err);
     }
   };
+
+  useEffect(() => {
+    // After the user data is updated, navigate based on user properties
+    if (user) {
+      console.log(user); // You can now safely log the updated user
+      if (user.choose === null) {
+        navigate("/choose"); // Navigate to /choose if choose is null
+      } else if (user.candidate === null && user.recruter === null) {
+        navigate("/choose");
+      } else {
+        navigate("/home"); // Navigate to /home if choose is not null
+      }
+    }
+  }, [user, navigate]); // Only run when user data changes
+
   return (
     <div className="min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-50">
       <h1 className="flex flex-row items-center">

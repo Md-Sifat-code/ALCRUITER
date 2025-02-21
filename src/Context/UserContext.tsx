@@ -17,6 +17,7 @@ interface UserContextType {
   user: User | null;
   isLoading: boolean;
   error: string | null;
+  logout: () => void; // <-- Add logout to the context type
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -33,17 +34,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     setError(null);
 
     try {
-      // Typing the response directly in the API call
       const response = await axios.get<User>(
         `https://chakrihub-1.onrender.com/User/search/${username}`
       );
-
+      console.log(response.data);
       setUser(response.data); // Store the user data from the response
     } catch (err) {
       setError("Failed to fetch user details.");
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // New logout function to reset the user state
+  const logout = () => {
+    setUser(null); // Clear the user context
   };
 
   useEffect(() => {
@@ -54,7 +59,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <UserContext.Provider value={{ fetchUserDetails, user, isLoading, error }}>
+    <UserContext.Provider
+      value={{ fetchUserDetails, user, isLoading, error, logout }}
+    >
       {children}
     </UserContext.Provider>
   );

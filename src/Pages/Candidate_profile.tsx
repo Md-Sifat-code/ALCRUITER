@@ -26,6 +26,8 @@ interface FormData {
   educationalQualifications: string;
   pastExperience: string;
   cv: File | null;
+  bio: string; // New field
+  about: string;
 }
 
 const CandidateProfile: React.FC = () => {
@@ -45,6 +47,8 @@ const CandidateProfile: React.FC = () => {
     educationalQualifications: "",
     pastExperience: "",
     cv: null,
+    bio: "", // Initialize new field
+    about: "",
   });
 
   // Handle text input changes
@@ -94,6 +98,8 @@ const CandidateProfile: React.FC = () => {
     );
     formDataToSubmit.append("pastExperience", formData.pastExperience);
     if (formData.cv) formDataToSubmit.append("cv", formData.cv);
+    formDataToSubmit.append("bio", formData.bio); // Append new field
+    formDataToSubmit.append("about", formData.about);
 
     fetch("https://chakrihub-1.onrender.com/api/candidates/add", {
       method: "POST",
@@ -124,6 +130,7 @@ const CandidateProfile: React.FC = () => {
       </h2>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Full Name */}
           <div className="flex items-center space-x-3">
             <FaUser className="text-gray-500" />
             <div className="w-full">
@@ -145,6 +152,7 @@ const CandidateProfile: React.FC = () => {
             </div>
           </div>
 
+          {/* Phone Number */}
           <div className="flex items-center space-x-3">
             <FaPhone className="text-gray-500" />
             <div className="w-full">
@@ -167,6 +175,7 @@ const CandidateProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* Location */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex items-center space-x-3">
             <FaLocationArrow className="text-gray-500" />
@@ -189,6 +198,7 @@ const CandidateProfile: React.FC = () => {
             </div>
           </div>
 
+          {/* Skills */}
           <div className="flex items-center space-x-3">
             <FaHandshakeSimpleSlash className="text-gray-500" />
             <div className="w-full">
@@ -211,64 +221,66 @@ const CandidateProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* New Fields (Bio, About, Years of Experience, Past Experience) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Bio */}
           <div className="flex items-center space-x-3">
-            <FaLanguage className="text-gray-500" />
+            <FaUser className="text-gray-500" />
             <div className="w-full">
               <label
-                htmlFor="language"
+                htmlFor="bio"
                 className="block font-semibold text-gray-700"
               >
-                Language
+                Bio
               </label>
-              <input
-                type="text"
-                id="language"
-                name="language"
-                value={formData.language}
+              <textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                rows={4}
               />
             </div>
           </div>
 
+          {/* About */}
           <div className="flex items-center space-x-3">
-            <FaLink className="text-gray-500" />
+            <FaUser className="text-gray-500" />
             <div className="w-full">
               <label
-                htmlFor="portfolioLinks"
+                htmlFor="about"
                 className="block font-semibold text-gray-700"
               >
-                Portfolio Links
+                About
               </label>
-              <input
-                type="text"
-                id="portfolioLinks"
-                name="portfolioLinks"
-                value={formData.portfolioLinks}
+              <textarea
+                id="about"
+                name="about"
+                value={formData.about}
                 onChange={handleChange}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
+                rows={4}
               />
             </div>
           </div>
         </div>
 
+        {/* Years of Experience */}
         <div className="flex items-center space-x-3">
           <FaBriefcase className="text-gray-500" />
           <div className="w-full">
             <label
-              htmlFor="preferedPosition"
+              htmlFor="yearsOfExperience"
               className="block font-semibold text-gray-700"
             >
-              Preferred Position
+              Years of Experience
             </label>
             <input
               type="text"
-              id="preferedPosition"
-              name="preferedPosition"
-              value={formData.preferedPosition}
+              id="yearsOfExperience"
+              name="yearsOfExperience"
+              value={formData.yearsOfExperience}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -276,19 +288,20 @@ const CandidateProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* Past Experience */}
         <div className="flex items-center space-x-3">
           <FaGraduationCap className="text-gray-500" />
           <div className="w-full">
             <label
-              htmlFor="educationalQualifications"
+              htmlFor="pastExperience"
               className="block font-semibold text-gray-700"
             >
-              Educational Qualifications
+              Past Experience
             </label>
             <textarea
-              id="educationalQualifications"
-              name="educationalQualifications"
-              value={formData.educationalQualifications}
+              id="pastExperience"
+              name="pastExperience"
+              value={formData.pastExperience}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}
@@ -296,6 +309,7 @@ const CandidateProfile: React.FC = () => {
           </div>
         </div>
 
+        {/* CV and Cover Picture */}
         <div className="flex items-center space-x-3">
           <FaFileAlt className="text-gray-500" />
           <div className="w-full">
@@ -334,7 +348,7 @@ const CandidateProfile: React.FC = () => {
         <div className="flex justify-center mt-8">
           <button
             type="submit"
-            className="w-full  px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>
