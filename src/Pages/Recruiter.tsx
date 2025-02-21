@@ -11,9 +11,48 @@ import { useUser } from "../Context/UserContext"; // Import the useUser hook
 const Recruiter: React.FC = () => {
   const { user, isLoading, error } = useUser(); // Access user from context
   const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+  const [skills, setSkills] = useState("");
+  const [mail, setMail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
+
+  const handleRecruitmentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const recruitmentData = {
+      title,
+      body,
+      skills,
+      mail,
+      userId: user?.id, // user ID automatically filled from context
+    };
+
+    try {
+      const response = await fetch("https://chakrihub-1.onrender.com/Post", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(recruitmentData),
+      });
+
+      if (response.ok) {
+        closeModal(); // Close modal after success
+        window.location.reload(); // Reload the page after success
+      } else {
+        alert("Error posting recruitment.");
+      }
+    } catch (error) {
+      alert("An error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -90,41 +129,21 @@ const Recruiter: React.FC = () => {
                 Job Openings: React, Node.js, Full Stack Developer
               </span>
             </div>
-          </div>
 
-          {/* Modal for More Information */}
-          {showModal && (
-            <div className="fixed inset-0 flex justify-center items-center bg-transparent bg-opacity-50">
-              <div className="bg-white border border-blue-600 rounded-lg p-6 max-w-sm w-full">
-                <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                  More Information
-                </h3>
-                <p className="text-gray-600 mb-2">
-                  <strong>Location:</strong>{" "}
-                  {recruiter?.officeLocation || "Not Available"}
-                </p>
-                <p className="text-gray-600 mb-2">
-                  <strong>Phone Number:</strong> (555) 123-4567
-                </p>
-                <p className="text-gray-600 mb-4">
-                  <strong>Email:</strong>{" "}
-                  {user?.email || "recruiter@company.com"}
-                </p>
-                <div className="flex justify-end">
-                  <button
-                    onClick={closeModal}
-                    className="text-white w-full font-bold bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
+            {/* Add Recruitment Button (Inside the Upper Card) */}
+            <div className="mt-4 mb-6">
+              <button
+                onClick={openModal}
+                className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow-md"
+              >
+                Add Recruitment
+              </button>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
-      {/* About Section (Same Size as the Upper Card) */}
+      {/* About Section (Below the Upper Card) */}
       <div className="mt-8 flex justify-center items-center">
         <div className="max-w-6xl w-full bg-white rounded-lg shadow-2xl p-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -142,30 +161,84 @@ const Recruiter: React.FC = () => {
         </div>
       </div>
 
-      {/* Contact Section */}
-      <div className="mt-8 flex justify-center items-center">
-        <div className="bg-white rounded-lg shadow-lg p-8">
-          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-            Contact Us
-          </h3>
-          <div className="flex space-x-6">
-            <a
-              href={`mailto:${user?.email || "recruiter@company.com"}`}
-              className="text-gray-600 hover:text-blue-500 transition duration-300"
-            >
-              <FaEnvelope className="text-xl" />
-            </a>
-            <a
-              href="https://www.linkedin.com/company/agiles"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-blue-500 transition duration-300"
-            >
-              <FaLink className="text-xl" />
-            </a>
+      {/* Recruitment Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-transparent">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-96">
+            <h3 className="text-2xl font-semibold mb-4">Post a Recruitment</h3>
+            <form onSubmit={handleRecruitmentSubmit}>
+              <div className="mb-4">
+                <label htmlFor="title" className="block text-gray-700">
+                  Job Title
+                </label>
+                <input
+                  type="text"
+                  id="title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="body" className="block text-gray-700">
+                  Job Description
+                </label>
+                <textarea
+                  id="body"
+                  value={body}
+                  onChange={(e) => setBody(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="skills" className="block text-gray-700">
+                  Required Skills
+                </label>
+                <input
+                  type="text"
+                  id="skills"
+                  value={skills}
+                  placeholder="Seperate skills using { , }"
+                  onChange={(e) => setSkills(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="mail" className="block text-gray-700">
+                  Contact Email
+                </label>
+                <input
+                  type="text"
+                  id="mail"
+                  value={mail}
+                  onChange={(e) => setMail(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-md"
+                  required
+                />
+              </div>
+              <div className="flex justify-between">
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+                >
+                  {isSubmitting ? "Posting..." : "Post Recruitment"}
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded-md"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
