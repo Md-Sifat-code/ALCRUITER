@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaMapMarkerAlt,
   FaIndustry,
@@ -16,6 +16,7 @@ const Recruiter: React.FC = () => {
   const [skills, setSkills] = useState("");
   const [mail, setMail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [posts, setPosts] = useState<any[]>([]); // State to store posts
 
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
@@ -53,6 +54,29 @@ const Recruiter: React.FC = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Fetch the posts from the API
+  useEffect(() => {
+    const fetchPosts = async () => {
+      if (user?.id) {
+        try {
+          const response = await fetch(
+            `https://chakrihub-1.onrender.com/Post/user/${user.id}`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setPosts(data); // Store the posts in the state
+          } else {
+            alert("Failed to fetch posts.");
+          }
+        } catch (error) {
+          alert("An error occurred while fetching posts.");
+        }
+      }
+    };
+
+    fetchPosts();
+  }, [user?.id]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -158,6 +182,33 @@ const Recruiter: React.FC = () => {
             scalable and reliable software applications that help our clients
             achieve their business goals.
           </p>
+        </div>
+      </div>
+
+      <div className="mt-8 flex justify-center items-center">
+        <div className="max-w-6xl w-full bg-white rounded-lg shadow-2xl p-8">
+          {/* Displaying Posts Side by Side */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {posts.map((post) => (
+              <div
+                key={post.id}
+                className="bg-white p-6 border rounded-lg shadow-lg"
+              >
+                <h4 className="text-xl font-semibold text-gray-800 mb-2">
+                  {post.title}
+                </h4>
+                <p className="text-gray-600 mb-2">{post.body}</p>
+                <div className="flex items-center space-x-2 mb-2">
+                  <FaLink className="text-blue-500" />
+                  <span className="text-gray-500">{post.skills}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FaEnvelope className="text-gray-500" />
+                  <span className="text-gray-600">{post.mail}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

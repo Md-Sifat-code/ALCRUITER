@@ -33,8 +33,10 @@ const Login: React.FC = () => {
       console.log(user); // You can now safely log the updated user
       if (user.choose === null) {
         navigate("/choose"); // Navigate to /choose if choose is null
-      } else if (user.candidate === null && user.recruter === null) {
-        navigate("/choose");
+      } else if (user.choose === "candidate") {
+        navigate("/home");
+      } else if (user.choose === "recruter") {
+        navigate("/home/jobs");
       } else {
         navigate("/home"); // Navigate to /home if choose is not null
       }

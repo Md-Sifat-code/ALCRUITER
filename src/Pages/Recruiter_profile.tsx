@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   FaUser,
   FaBuilding,
@@ -29,6 +30,7 @@ const RecruiterProfile: React.FC = () => {
   });
 
   const { user } = useUser(); // Get user context
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -78,6 +80,8 @@ const RecruiterProfile: React.FC = () => {
     if (response.ok) {
       // Handle successful form submission (e.g., success message)
       console.log("Recruiter profile submitted successfully!");
+      navigate("/home/jobs");
+      window.location.reload();
     } else {
       // Handle error (e.g., show error message)
       console.error("Failed to submit recruiter profile");

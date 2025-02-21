@@ -39,15 +39,16 @@ const Candidate: React.FC = () => {
 
           <div className="px-12 text-start mt-14">
             <div className="flex items-center space-x-2">
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                {user?.candidate?.fullName || "John Doe"}{" "}
-                {/* Display user's full name */}
+              <h2 className="text-xl mt-[-6px] flex flex-col font-bold text-gray-800 ">
+                {/* Display user's full name */}@{user?.username}
               </h2>
+
               <span className="flex items-center bg-amber-600 font-bold text-white text-sm px-2 py-1 rounded-full">
                 <FaStar className="mr-1" />
                 Candidate
               </span>
             </div>
+
             <p className="text-gray-500 mb-4">
               {user?.candidate?.educationalQualifications ||
                 "Full Stack Developer"}{" "}
@@ -75,6 +76,20 @@ const Candidate: React.FC = () => {
                 </span>{" "}
                 {/* Display years of experience */}
               </div>
+              <div className="flex items-center justify-center space-x-2 mb-2">
+                <a
+                  href={user?.candidate?.cv || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center space-x-2 cursor-pointer"
+                >
+                  <FaBriefcase className="text-gray-400" />
+                  <span className="text-blue-700">{user?.username}</span>
+                  <span className=" underline text-blue-800">
+                    {user?.candidate?.cv ? "CV" : "5+ Years Experience"}
+                  </span>
+                </a>
+              </div>
             </div>
 
             <div className="mb-4">
@@ -94,6 +109,11 @@ const Candidate: React.FC = () => {
                   More Information
                 </h3>
                 <p className="text-gray-600 mb-2">
+                  {" "}
+                  <strong>Full name:</strong>{" "}
+                  {user?.candidate?.fullName || "John Doe"}{" "}
+                </p>
+                <p className="text-gray-600 mb-2">
                   <strong>Location:</strong>{" "}
                   {user?.candidate?.location || "New York, USA"}
                 </p>
@@ -104,6 +124,7 @@ const Candidate: React.FC = () => {
                 <p className="text-gray-600 mb-4">
                   <strong>Email:</strong> {user?.email || "johndoe@example.com"}
                 </p>
+
                 <div className="flex justify-end">
                   <button
                     onClick={closeModal}
@@ -137,6 +158,32 @@ const Candidate: React.FC = () => {
             attending tech meetups, and staying up-to-date with the latest
             trends in the tech world.
           </p>
+        </div>
+      </div>
+
+      {/* More Info Card Below About Me Section */}
+      <div className="mt-4 flex flex-col justify-center items-center">
+        <div className="max-w-6xl w-full bg-white rounded-lg shadow-lg p-8">
+          <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+            More Information
+          </h3>
+          <div className="mb-4">
+            <p className="text-gray-700 text-lg">
+              <strong>Full Name:</strong>{" "}
+              {user?.candidate?.fullName || "John Doe"}
+            </p>
+            <p className="text-gray-700 text-lg">
+              <strong>Phone Number:</strong>{" "}
+              {user?.candidate?.phoneNumber || "(555) 123-4567"}
+            </p>
+            <p className="text-gray-700 text-lg">
+              <strong>Email:</strong> {user?.email || "johndoe@example.com"}
+            </p>
+            <p className="text-gray-700 text-lg">
+              <strong>Location:</strong>{" "}
+              {user?.candidate?.location || "New York, USA"}
+            </p>
+          </div>
         </div>
       </div>
     </>

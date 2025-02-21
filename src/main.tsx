@@ -15,6 +15,7 @@ import Recruiter from "./Pages/Recruiter";
 import { LoginProvider } from "./Context/LoginContext";
 import { UserProvider } from "./Context/UserContext";
 import Choose from "./Authentication/Auth_component/Choose";
+import Jobs from "./Pages/Jobs";
 
 // Define the router with routes
 const router = createBrowserRouter([
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
             element: <Posts />,
           },
         ],
+      },
+      {
+        path: "/home/jobs",
+        element: <Jobs />,
       },
       {
         path: "/home/profile/info/candidate",

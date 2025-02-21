@@ -13,35 +13,7 @@ const Home: React.FC = () => {
         </div>
         <div className="col-span-2">
           {/* middle */}
-          <div className="bg-white p-4 rounded-xl">
-            <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full bg-gray-300">
-                {/* this will be user icon */}
-              </div>
-              <div className="flex-1">
-                {/* an input field */}
-                <input
-                  type="text"
-                  className="w-full p-2 rounded border border-gray-300"
-                  placeholder="What's on your mind?"
-                />
-              </div>
-            </div>
-            <div className="flex flex-row justify-center gap-10 space-x-4 mt-4">
-              <button className="p-2  text-black rounded flex items-center space-x-2">
-                <span>🎥</span>
-                <span>Video</span>
-              </button>
-              <button className="p-2 text-black  rounded flex items-center space-x-2">
-                <span>📷</span>
-                <span>Photo</span>
-              </button>
-              <button className="p-2 text-black  rounded flex items-center space-x-2">
-                <span>✍️</span>
-                <span>Write Article</span>
-              </button>
-            </div>
-          </div>
+
           <Outlet />
         </div>
         <div>
@@ -54,3 +26,33 @@ const Home: React.FC = () => {
 };
 
 export default Home;
+
+// <div className="bg-white p-4 rounded-xl">
+//             <div className="flex items-center space-x-4">
+//               <div className="w-10 h-10 rounded-full bg-gray-300">
+//                 {/* this will be user icon */}
+//               </div>
+//               <div className="flex-1">
+//                 {/* an input field */}
+//                 <input
+//                   type="text"
+//                   className="w-full p-2 rounded border border-gray-300"
+//                   placeholder="What's on your mind?"
+//                 />
+//               </div>
+//             </div>
+//             <div className="flex flex-row justify-center gap-10 space-x-4 mt-4">
+//               <button className="p-2  text-black rounded flex items-center space-x-2">
+//                 <span>🎥</span>
+//                 <span>Video</span>
+//               </button>
+//               <button className="p-2 text-black  rounded flex items-center space-x-2">
+//                 <span>📷</span>
+//                 <span>Photo</span>
+//               </button>
+//               <button className="p-2 text-black  rounded flex items-center space-x-2">
+//                 <span>✍️</span>
+//                 <span>Write Article</span>
+//               </button>
+//             </div>
+//           </div>

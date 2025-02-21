@@ -11,7 +11,7 @@ import {
 } from "react-icons/fa";
 import { FaHandshakeSimpleSlash } from "react-icons/fa6";
 import { useUser } from "../Context/UserContext";
-
+import { useNavigate } from "react-router-dom";
 // Define the form data type
 interface FormData {
   fullName: string;
@@ -33,7 +33,7 @@ interface FormData {
 const CandidateProfile: React.FC = () => {
   // Initialize state with a specific type
   const { user } = useUser(); // Access the user context
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     fullName: "",
     phoneNumber: "",
@@ -116,7 +116,9 @@ const CandidateProfile: React.FC = () => {
 
         // Read the plain text response
         const responseText = await response.text();
-        console.log("Form submitted successfully:", responseText); // Log the plain text response
+        console.log("Form submitted successfully:", responseText);
+        navigate("/home"); // Log the plain text response
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error submitting form:", error);

@@ -164,16 +164,11 @@ const Signup: React.FC = () => {
       {isSuccess && (
         <div className="fixed inset-0 flex items-center justify-center z-20">
           <div className="modal modal-open">
-            <div className="modal-box">
-              <h2 className="text-2xl font-semibold text-teal-500">Success!</h2>
-              <p className="text-gray-600 mt-2">
+            <div className="modal-box bg-blue-900 p-12">
+              <h2 className="text-2xl font-semibold text-white">Success!</h2>
+              <p className="text-white mt-2">
                 You have successfully created an account.
               </p>
-              <div className="modal-action">
-                <button onClick={() => navigate("/")} className="btn btn-teal">
-                  Go to Homepage
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -182,21 +177,21 @@ const Signup: React.FC = () => {
       {/* Error Modal for username already exists */}
       {showErrorModal && (
         <div className="fixed inset-0 flex items-center justify-center z-20">
-          <div className="modal modal-open">
-            <div className="modal-box">
+          <div className="modal bg-black modal-open">
+            <div className="modal-box bg-blue-900 p-12">
               <h2 className="text-3xl mb-4 text-center font-semibold text-red-500">
                 Opps!
               </h2>
               <p className="flex justify-center items-center mt-3">
-                <FaSadTear className="text-teal-700 text-2xl" />
+                <FaSadTear className="text-white text-2xl" />
               </p>
-              <p className="text-gray-600 mt-2 text-center">
+              <p className="text-white mt-2 text-center">
                 Username Already Exists
               </p>
               <div className="w-full">
                 <button
                   onClick={() => setShowErrorModal(false)} // Close the error modal
-                  className="btn w-full mt-4 text-teal-700 font-bold btn-red"
+                  className="px-8 py-3 bg-black w-full mt-4 text-white font-bold btn-red"
                 >
                   Close
                 </button>
