@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FaUserCircle, FaCog, FaBell } from "react-icons/fa";
+import { FaUserCircle, FaCog, FaBell, FaSpinner } from "react-icons/fa";
 import { useUser } from "../Context/UserContext"; // Import the useUser hook
 
 const LeftSide: React.FC = () => {
@@ -15,7 +15,14 @@ const LeftSide: React.FC = () => {
     }
   }, [user, fetchUserDetails]);
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center space-x-2">
+        <FaSpinner className="animate-spin text-blue-500 w-6 h-6" />
+        <p className="text-lg font-semibold text-gray-600">Loading...</p>
+      </div>
+    );
+  }
   if (error) return <p>{error}</p>;
 
   return (

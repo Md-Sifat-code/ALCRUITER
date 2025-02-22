@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import { FaSadTear } from "react-icons/fa";
+import { FaSadTear, FaSpinner } from "react-icons/fa"; // Import spinner icon
 import profilepic from "/profilepic.png"; // Static imported image (used as fallback)
 
 const Signup: React.FC = () => {
@@ -11,6 +11,7 @@ const Signup: React.FC = () => {
   const [profileImage, setProfileImage] = useState<File | null>(null); // State for profile image
   const [isSuccess, setIsSuccess] = useState(false); // State for success modal
   const [showErrorModal, setShowErrorModal] = useState(false); // State for error modal
+  const [loading, setLoading] = useState(false); // State for loading spinner
   const navigate = useNavigate(); // Hook to navigate to another route
 
   // Handle profile image change (if user uploads their own image)
@@ -22,6 +23,7 @@ const Signup: React.FC = () => {
 
   // Handle form submission
   const handleSubmit = async () => {
+    setLoading(true); // Start loading spinner
     const formData = new FormData();
     formData.append("username", username);
     formData.append("email", email);
@@ -72,6 +74,8 @@ const Signup: React.FC = () => {
       }
     } catch (error) {
       console.log("Error: ", error);
+    } finally {
+      setLoading(false); // Stop loading spinner after request is finished
     }
   };
 
@@ -145,8 +149,13 @@ const Signup: React.FC = () => {
             type="button"
             onClick={handleSubmit}
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            disabled={loading} // Disable button during loading
           >
-            Sign Up
+            {loading ? (
+              <FaSpinner className="animate-spin" /> // Show spinning icon during loading
+            ) : (
+              "Sign Up"
+            )}
           </button>
 
           {/* Login link */}
@@ -160,6 +169,13 @@ const Signup: React.FC = () => {
           </div>
         </form>
       </div>
+
+      {/* Loading Spinner Icon */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center z-30 bg-transparent">
+          <FaSpinner className="animate-spin text-blue-800" size={40} />
+        </div>
+      )}
 
       {/* Success Modal */}
       {isSuccess && (

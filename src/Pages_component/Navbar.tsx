@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom"; // Import useNavigate for routing
+import { Link, NavLink, useNavigate } from "react-router-dom"; // Import useNavigate for routing
 import {
   FaHome,
   FaBriefcase,
@@ -40,7 +40,12 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center py-1 px-6">
         {/* Left section: Logo and Searchbar */}
         <div className="flex mb-4 md:mb-0 items-center space-x-4">
-          <p className="bg-blue-900 p-2 text-white font-bold mr-1">AL</p>
+          <Link
+            to={"/home"}
+            className="bg-blue-900 p-2 text-white font-bold mr-1"
+          >
+            AL
+          </Link>
           <div className="relative">
             <input
               type="text"
@@ -72,9 +77,22 @@ const Navbar: React.FC = () => {
             </NavLink>
           )}
 
+          {user?.choose === "candidate" && (
+            <NavLink
+              to={`/home/matchjob/${user.candidate.id}`} // Pass the candidateId in the URL
+              className={({ isActive }) =>
+                isActive
+                  ? "flex flex-col items-center text-blue-800"
+                  : "flex flex-col items-center"
+              }
+            >
+              <FaBriefcase size={24} />
+              <span className="text-sm mt-1">Match Job</span>
+            </NavLink>
+          )}
           {user?.choose === "recruter" && (
             <NavLink
-              to="/home/jobs" // Specify the link for Jobs
+              to={`/home/jobs/${user.id}`} // Pass the user ID to the Jobs page
               className={({ isActive }) =>
                 isActive
                   ? "flex flex-col items-center text-blue-800"
@@ -85,7 +103,6 @@ const Navbar: React.FC = () => {
               <span className="text-sm mt-1">Jobs</span>
             </NavLink>
           )}
-
           <NavLink
             to="/notifications" // Specify the link for Notifications
             className={({ isActive }) =>
@@ -97,7 +114,6 @@ const Navbar: React.FC = () => {
             <FaBell size={24} />
             <span className="text-sm mt-1">Notifications</span>
           </NavLink>
-
           {/* Right section: Profile Icon and Dropdown */}
           <div className="relative">
             <div

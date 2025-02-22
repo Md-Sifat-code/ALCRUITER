@@ -11,10 +11,9 @@ import { useUser } from "../Context/UserContext"; // Import the useUser hook
 const Recruiter: React.FC = () => {
   const { user, isLoading, error } = useUser(); // Access user from context
   const [showModal, setShowModal] = useState(false);
-  const [title, setTitle] = useState("");
+
   const [body, setBody] = useState("");
-  const [skills, setSkills] = useState("");
-  const [mail, setMail] = useState("");
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [posts, setPosts] = useState<any[]>([]); // State to store posts
 
@@ -26,10 +25,8 @@ const Recruiter: React.FC = () => {
     setIsSubmitting(true);
 
     const recruitmentData = {
-      title,
       body,
-      skills,
-      mail,
+
       userId: user?.id, // user ID automatically filled from context
     };
 
@@ -219,19 +216,6 @@ const Recruiter: React.FC = () => {
             <h3 className="text-2xl font-semibold mb-4">Post a Recruitment</h3>
             <form onSubmit={handleRecruitmentSubmit}>
               <div className="mb-4">
-                <label htmlFor="title" className="block text-gray-700">
-                  Job Title
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-4">
                 <label htmlFor="body" className="block text-gray-700">
                   Job Description
                 </label>
@@ -243,33 +227,7 @@ const Recruiter: React.FC = () => {
                   required
                 />
               </div>
-              <div className="mb-4">
-                <label htmlFor="skills" className="block text-gray-700">
-                  Required Skills
-                </label>
-                <input
-                  type="text"
-                  id="skills"
-                  value={skills}
-                  placeholder="Seperate skills using { , }"
-                  onChange={(e) => setSkills(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
-              <div className="mb-4">
-                <label htmlFor="mail" className="block text-gray-700">
-                  Contact Email
-                </label>
-                <input
-                  type="text"
-                  id="mail"
-                  value={mail}
-                  onChange={(e) => setMail(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
-                  required
-                />
-              </div>
+
               <div className="flex justify-between">
                 <button
                   type="submit"

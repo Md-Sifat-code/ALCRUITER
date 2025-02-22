@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 // Define the structure of the post and user data
 interface Recruiter {
@@ -31,6 +33,8 @@ const Posts: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
 
+  const navigate = useNavigate(); // Hook for navigation
+
   useEffect(() => {
     // Fetch posts from API
     const fetchPosts = async () => {
@@ -52,12 +56,22 @@ const Posts: React.FC = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center space-x-2">
+        <FaSpinner className="animate-spin text-blue-500 w-6 h-6" />
+        <p className="text-lg font-semibold text-gray-600">Loading...</p>
+      </div>
+    );
   }
 
   if (error) {
     return <div>{error}</div>;
   }
+
+  const handlePostClick = (id: number) => {
+    // Navigate to the detailed post page with post id
+    navigate(`/home/post/${id}`);
+  };
 
   return (
     <section className="">
@@ -66,6 +80,7 @@ const Posts: React.FC = () => {
           <div
             key={post.id}
             className="max-w-xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden"
+            onClick={() => handlePostClick(post.id)} // Add click handler
           >
             {/* Check if recruiter cover photo exists */}
             {post.user.recruiter?.coverPhoto && (
@@ -94,14 +109,7 @@ const Posts: React.FC = () => {
                 {post.title}
               </h2>
               <p className="mt-2 text-gray-600">{post.body}</p>
-              <div className="mt-4 text-sm text-gray-500">
-                <p>
-                  <strong>Skills:</strong> {post.skills}
-                </p>
-                <p>
-                  <strong>Email:</strong> {post.mail}
-                </p>
-              </div>
+
               {/* Check if recruiter info exists */}
               {post.user.recruiter && (
                 <div className="mt-4">
@@ -126,4 +134,3 @@ const Posts: React.FC = () => {
 };
 
 export default Posts;
-``;

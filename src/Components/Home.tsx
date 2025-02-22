@@ -7,16 +7,16 @@ const Home: React.FC = () => {
   return (
     <section className="mt-12">
       <div className="container mx-auto max-w-6xl gap-8 grid grid-cols-4">
-        <div>
+        <div className=" hidden md:flex">
           {/* left side */}
           <LeftSide />
         </div>
-        <div className="col-span-2">
+        <div className=" col-span-4 md:col-span-2">
           {/* middle */}
 
           <Outlet />
         </div>
-        <div>
+        <div className=" hidden md:flex ">
           {/* right side */}
           <RightSide />
         </div>

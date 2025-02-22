@@ -16,12 +16,18 @@ import { LoginProvider } from "./Context/LoginContext";
 import { UserProvider } from "./Context/UserContext";
 import Choose from "./Authentication/Auth_component/Choose";
 import Jobs from "./Pages/Jobs";
+import Post_details from "./Components/Post_details";
+import Recuiter from "./Components/Recuiter";
+import Match from "./Components/Match";
+import Matched_candiates from "./Pages/Matched_candiates";
+import Error_el from "./Error/Error_el";
 
 // Define the router with routes
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Auth_Layout />,
+    errorElement: <Error_el />,
     children: [
       {
         path: "/",
@@ -40,6 +46,7 @@ const router = createBrowserRouter([
   {
     path: "/home",
     element: <Main_Layout />,
+    errorElement: <Error_el />,
     children: [
       {
         path: "/home",
@@ -52,8 +59,24 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/home/jobs",
+        path: "/home/jobs/:userId",
         element: <Jobs />,
+      },
+      {
+        path: "/home/matched/candidates/:postId",
+        element: <Matched_candiates />,
+      },
+      {
+        path: "/home/post/:id",
+        element: <Post_details />,
+      },
+      {
+        path: "/home/matchjob/:candidateId",
+        element: <Match />,
+      },
+      {
+        path: "/home/recruiter/:id",
+        element: <Recuiter />,
       },
       {
         path: "/home/profile/info/candidate",

@@ -36,7 +36,7 @@ const Login: React.FC = () => {
       } else if (user.choose === "candidate") {
         navigate("/home");
       } else if (user.choose === "recruter") {
-        navigate("/home/jobs");
+        navigate("/home");
       } else {
         navigate("/home"); // Navigate to /home if choose is not null
       }

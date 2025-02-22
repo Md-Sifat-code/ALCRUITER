@@ -71,8 +71,9 @@ const Candidate: React.FC = () => {
               </div>
               <div className="flex items-center justify-center space-x-2 mb-2">
                 <FaBriefcase className="text-gray-400" />
-                <span className="text-gray-600">
+                <span className="text-gray-600 flex flex-row items-center">
                   {user?.candidate?.yearsOfExperience || "5+ Years Experience"}
+                  <p className="px-2">years of Experience</p>
                 </span>{" "}
                 {/* Display years of experience */}
               </div>
