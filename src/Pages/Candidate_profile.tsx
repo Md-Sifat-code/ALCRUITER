@@ -3,8 +3,6 @@ import {
   FaUser,
   FaPhone,
   FaLocationArrow,
-  FaLanguage,
-  FaLink,
   FaBriefcase,
   FaGraduationCap,
   FaFileAlt,

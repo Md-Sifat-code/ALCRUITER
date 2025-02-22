@@ -134,6 +134,7 @@ const Signup: React.FC = () => {
             <input
               type="file"
               accept="image/*"
+              placeholder="Add small size profile pic"
               onChange={handleImageChange}
               className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />

@@ -37,7 +37,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
       // Log the response to verify
       console.log("Login response:", response.data);
 
-      const { token, username: returnedUsername, email, roles } = response.data;
+      const { token, username: returnedUsername, email } = response.data;
 
       if (returnedUsername) {
         sessionStorage.setItem("token", token);
