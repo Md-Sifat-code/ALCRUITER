@@ -223,7 +223,7 @@ const Recruiter: React.FC = () => {
                   id="body"
                   value={body}
                   onChange={(e) => setBody(e.target.value)}
-                  className="w-full p-2 border border-gray-300 rounded-md"
+                  className="w-full h-48 p-2 border border-gray-300 rounded-md"
                   required
                 />
               </div>

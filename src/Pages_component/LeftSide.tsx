@@ -1,9 +1,24 @@
 import React, { useEffect } from "react";
 import { FaUserCircle, FaCog, FaBell, FaSpinner } from "react-icons/fa";
 import { useUser } from "../Context/UserContext"; // Import the useUser hook
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 
 const LeftSide: React.FC = () => {
   const { user, isLoading, error, fetchUserDetails } = useUser();
+  const navigate = useNavigate(); // Declare navigate here
+
+  const handleProfileNavigation = () => {
+    console.log("Navigating to profile...");
+    if (user?.choose === "candidate") {
+      console.log("Navigating to candidate profile");
+      navigate("/home/profile/candidate");
+    } else if (user?.choose === "recruter") {
+      console.log("Navigating to recruiter profile");
+      navigate("/home/profile/recruiter");
+    } else {
+      console.log("User choose is not set correctly or invalid");
+    }
+  };
 
   // Optional: Trigger fetching of user details if not available (depending on your app structure)
   useEffect(() => {
@@ -29,8 +44,11 @@ const LeftSide: React.FC = () => {
     <section className="">
       <div className="flex flex-col items-center space-y-6">
         {/* Profile Card */}
-        <div className="w-full max-w-xs p-6 bg-white shadow-lg rounded-xl">
-          <div className="flex flex-col items-center">
+        <div className="w-full flex justify-center items-center max-w-xs p-6 bg-white shadow-lg rounded-xl">
+          <button
+            onClick={handleProfileNavigation}
+            className="flex flex-col justify-center items-center"
+          >
             {/* Display profile picture if available or fallback to default */}
             {user?.profilpic ? (
               <img
@@ -41,13 +59,21 @@ const LeftSide: React.FC = () => {
             ) : (
               <FaUserCircle className="text-4xl text-gray-700" />
             )}
-            <h2 className="mt-4 text-xl font-semibold">{user?.username}</h2>
+            <button
+              onClick={handleProfileNavigation}
+              className="mt-4 text-xl font-semibold"
+            >
+              {user?.username}
+            </button>
             <p className="text-gray-500">Software Developer</p>
-          </div>
+          </button>
         </div>
 
         {/* Page Card */}
-        <div className="w-full max-w-xs p-6 bg-white shadow-lg rounded-xl">
+        <Link
+          to={"/amnei"}
+          className="w-full max-w-xs p-6 bg-white shadow-lg rounded-xl"
+        >
           <h3 className="text-lg font-medium">Page Settings</h3>
           <div className="mt-4 space-y-4">
             <div className="flex justify-between items-center">
@@ -59,26 +85,26 @@ const LeftSide: React.FC = () => {
               <FaBell className="text-gray-600" />
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Recent Activity Card */}
-        <div className="w-full max-w-xs p-6 bg-white shadow-lg rounded-xl">
+        <Link
+          to={"/amnei"}
+          className="w-full max-w-xs p-6 bg-white shadow-lg rounded-xl"
+        >
           <h3 className="text-lg font-medium">Recent Activity</h3>
           <div className="mt-4 space-y-4">
             <div className="flex justify-between items-center">
               <span>Logged in from New Device</span>
-              <span className="text-sm text-gray-500">2h ago</span>
             </div>
             <div className="flex justify-between items-center">
               <span>Updated Profile Picture</span>
-              <span className="text-sm text-gray-500">5h ago</span>
             </div>
             <div className="flex justify-between items-center">
               <span>Joined New Group</span>
-              <span className="text-sm text-gray-500">1d ago</span>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     </section>
   );

@@ -37,7 +37,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       const response = await axios.get<User>(
         `https://chakrihub-1.onrender.com/User/search/${username}`
       );
-      console.log(response.data);
+
       setUser(response.data); // Store the user data from the response
     } catch (err) {
       setError("Failed to fetch user details.");

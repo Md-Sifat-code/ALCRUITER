@@ -7,6 +7,7 @@ import {
   FaIndustry,
   FaFileAlt,
   FaImage,
+  FaPhoneAlt,
 } from "react-icons/fa";
 import { useUser } from "../Context/UserContext"; // Importing the UserContext
 
@@ -17,6 +18,8 @@ interface FormData {
   officeLocation: string;
   companyDescription: string;
   industryType: string;
+  bio: string; // New field for bio
+  phoneNumber: string; // New field for phone number
 }
 
 const RecruiterProfile: React.FC = () => {
@@ -27,6 +30,8 @@ const RecruiterProfile: React.FC = () => {
     officeLocation: "",
     companyDescription: "",
     industryType: "",
+    bio: "", // Initialize bio field
+    phoneNumber: "",
   });
 
   const { user } = useUser(); // Get user context
@@ -67,6 +72,8 @@ const RecruiterProfile: React.FC = () => {
     formDataToSend.append("officeLocation", formData.officeLocation);
     formDataToSend.append("companyDescription", formData.companyDescription);
     formDataToSend.append("industryType", formData.industryType);
+    formDataToSend.append("bio", formData.bio); // Add bio to formData
+    formDataToSend.append("phoneNumber", formData.phoneNumber);
     formDataToSend.append("userId", String(user.id)); // Adding userId from context
 
     const response = await fetch(
@@ -80,7 +87,7 @@ const RecruiterProfile: React.FC = () => {
     if (response.ok) {
       // Handle successful form submission (e.g., success message)
       console.log("Recruiter profile submitted successfully!");
-      navigate("/home/jobs");
+      navigate("/home");
       window.location.reload();
     } else {
       // Handle error (e.g., show error message)
@@ -179,25 +186,46 @@ const RecruiterProfile: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <div className="flex items-center space-x-3">
-          <FaIndustry className="text-gray-500" />
-          <div className="w-full">
-            <label
-              htmlFor="industryType"
-              className="block font-semibold text-gray-700"
-            >
-              Industry Type
-            </label>
-            <input
-              type="text"
-              id="industryType"
-              name="industryType"
-              value={formData.industryType}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="flex items-center space-x-3">
+            <FaIndustry className="text-gray-500" />
+            <div className="w-full">
+              <label
+                htmlFor="industryType"
+                className="block font-semibold text-gray-700"
+              >
+                Industry Type
+              </label>
+              <input
+                type="text"
+                id="industryType"
+                name="industryType"
+                value={formData.industryType}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <FaPhoneAlt className="text-gray-500" />
+            <div className="w-full">
+              <label
+                htmlFor="phoneNumber"
+                className="block font-semibold text-gray-700"
+              >
+                Phone Number
+              </label>
+              <input
+                type="text"
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
           </div>
         </div>
 
@@ -214,6 +242,22 @@ const RecruiterProfile: React.FC = () => {
               id="companyDescription"
               name="companyDescription"
               value={formData.companyDescription}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              rows={4}
+            />
+          </div>
+        </div>
+        <div className="flex items-center space-x-3">
+          <FaUser className="text-gray-500" />
+          <div className="w-full">
+            <label htmlFor="bio" className="block font-semibold text-gray-700">
+              Bio
+            </label>
+            <textarea
+              id="bio"
+              name="bio"
+              value={formData.bio}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}

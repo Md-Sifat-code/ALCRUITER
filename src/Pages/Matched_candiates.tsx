@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { FaUser, FaStar, FaCode } from "react-icons/fa";
+
 // We will use the Bootstrap progress bar here for visual clarity
 
 interface MatchedCandidate {
@@ -8,6 +9,7 @@ interface MatchedCandidate {
   candidateName: string;
   matchedSkills: string[];
   matchPercentage: number;
+  username: string; // Updated 'username' to 'userName'
 }
 
 const Matched_candiates: React.FC = () => {
@@ -81,8 +83,6 @@ const Matched_candiates: React.FC = () => {
             </div>
           </div>
 
-          {/* Match Percentage */}
-
           {/* Matched Skills */}
           <div className="mb-6">
             <h4 className="font-medium text-gray-700">Matched Skills</h4>
@@ -105,15 +105,12 @@ const Matched_candiates: React.FC = () => {
               <FaStar className="text-yellow-400" />
               <span>Match Quality: {candidate.matchPercentage}%</span>
             </div>
-            <button
+            <Link
+              to={`/home/candidateprofileview/${candidate.username}`} // Updated to use 'userName' instead of 'username'
               className="px-4 py-2 bg-blue-600 text-white rounded-full text-sm hover:bg-blue-700 transition-all"
-              onClick={() => {
-                console.log(`Matched candidate ${candidate.candidateId}`);
-                // Add action for button click here
-              }}
             >
               View Profile
-            </button>
+            </Link>
           </div>
         </div>
       ))}

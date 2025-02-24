@@ -1,32 +1,27 @@
 import React, { useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom"; // Import useNavigate for routing
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   FaHome,
   FaBriefcase,
   FaBell,
   FaUserAlt,
   FaSearch,
-} from "react-icons/fa"; // Importing icons from react-icons
-import { useUser } from "../Context/UserContext"; // Importing useUser to access user context
+} from "react-icons/fa";
+import { useUser } from "../Context/UserContext";
+// Import axios for HTTP requests
 
 const Navbar: React.FC = () => {
-  const { user, logout } = useUser(); // Accessing the user context and logout function
-  const navigate = useNavigate(); // Hook to programmatically navigate
-
-  // State to toggle the dropdown menu visibility
+  const { user, logout } = useUser();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(""); // Track the search input
 
-  // Handle logout
   const handleLogout = () => {
-    // Clear everything from sessionStorage
     sessionStorage.clear();
-    // Clear user data from the context
-    logout(); // Call the logout function from UserContext
-    // Navigate to the home page
+    logout();
     navigate("/");
   };
 
-  // Handle profile navigation based on user choice (candidate/recruiter)
   const handleProfileNavigation = () => {
     if (user?.choose === "candidate") {
       navigate("/home/profile/candidate");
@@ -35,10 +30,21 @@ const Navbar: React.FC = () => {
     }
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  // Handle search when search icon is clicked
+  const handleSearch = async () => {
+    if (searchQuery) {
+      // Navigate to userprofile page with the username
+      navigate(`/home/userprofile`, { state: { username: searchQuery } });
+    }
+  };
+
   return (
     <section className="bg-white">
       <div className="container mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center py-1 px-6">
-        {/* Left section: Logo and Searchbar */}
         <div className="flex mb-4 md:mb-0 items-center space-x-4">
           <Link
             to={"/home"}
@@ -49,19 +55,21 @@ const Navbar: React.FC = () => {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Search Candidates"
+              value={searchQuery}
+              onChange={handleSearchChange}
               className="p-2 pl-10 pr-3 border border-gray-300 rounded-md"
             />
-            {/* Search Icon */}
             <FaSearch
               size={20}
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
+              onClick={handleSearch} // Trigger search on icon click
             />
           </div>
         </div>
 
         {/* Middle section: Navigation */}
-        <div className="flex space-x-6">
+        <div className="flex flex-row items-center space-x-6">
           {/* Conditionally render Home or Jobs based on user.choose */}
           {user?.choose === "candidate" && (
             <NavLink

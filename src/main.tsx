@@ -21,6 +21,8 @@ import Recuiter from "./Components/Recuiter";
 import Match from "./Components/Match";
 import Matched_candiates from "./Pages/Matched_candiates";
 import Error_el from "./Error/Error_el";
+import User_profile from "./Pages/User_profile";
+import Profile_view from "./Pages/Profile_view";
 
 // Define the router with routes
 const router = createBrowserRouter([
@@ -93,6 +95,14 @@ const router = createBrowserRouter([
       {
         path: "/home/profile/recruiter",
         element: <Recruiter />,
+      },
+      {
+        path: "/home/userprofile",
+        element: <User_profile />,
+      },
+      {
+        path: "/home/candidateprofileview/:username",
+        element: <Profile_view />,
       },
     ],
   },

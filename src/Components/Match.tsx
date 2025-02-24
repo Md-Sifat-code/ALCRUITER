@@ -6,6 +6,8 @@ interface JobSuggestion {
   description: string;
   requiredSkills: string[];
   matchPercentage: number;
+  recruiterDetails?: Recruiter; // recruiterDetails is now optional
+  recruiterProfilePic?: string; // recruiterProfilePic for storing the profile pic for each job
 }
 
 interface Recruiter {
@@ -23,10 +25,6 @@ const Match: React.FC = () => {
   const [jobSuggestions, setJobSuggestions] = useState<JobSuggestion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [recruiterDetails, setRecruiterDetails] = useState<Recruiter | null>(
-    null
-  );
-  const [userProfilePic, setUserProfilePic] = useState<string | null>(null);
   const navigate = useNavigate(); // Initialize useNavigate for routing
 
   useEffect(() => {
@@ -39,7 +37,22 @@ const Match: React.FC = () => {
           setJobSuggestions(data);
           setLoading(false);
           if (data.length > 0) {
-            fetchRecruiterDetails(data[0].id); // Fetch recruiter info for the first job suggestion
+            // Fetch recruiter details for each job concurrently
+            Promise.all(
+              data.map((job: JobSuggestion) =>
+                fetchRecruiterDetails(job.id).then((recruiterData) => {
+                  return {
+                    ...job,
+                    recruiterDetails: recruiterData.recruter,
+                    recruiterProfilePic: recruiterData.profilpic,
+                  };
+                })
+              )
+            )
+              .then((updatedJobs) => setJobSuggestions(updatedJobs))
+              .catch(() => {
+                setError("Failed to fetch recruiter details.");
+              });
           }
         })
         .catch(() => {
@@ -49,15 +62,11 @@ const Match: React.FC = () => {
     }
   }, [candidateId]);
 
-  const fetchRecruiterDetails = (jobId: number) => {
-    fetch(`https://chakrihub-1.onrender.com/Post/${jobId}`)
+  const fetchRecruiterDetails = (jobId: number): Promise<any> => {
+    return fetch(`https://chakrihub-1.onrender.com/Post/${jobId}`)
       .then((response) => response.json())
       .then((data) => {
-        setRecruiterDetails(data.user.recruter);
-        setUserProfilePic(data.user.profilpic);
-      })
-      .catch(() => {
-        setError("Failed to fetch recruiter details.");
+        return { recruter: data.user.recruter, profilpic: data.user.profilpic }; // Return recruiter details and profile picture
       });
   };
 
@@ -86,46 +95,44 @@ const Match: React.FC = () => {
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {jobSuggestions.length > 0 ? (
-          jobSuggestions.map((job) => (
+          jobSuggestions.map((job: JobSuggestion) => (
             <div
               key={job.id}
               className="bg-white border border-gray-300 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300"
             >
-              {recruiterDetails && userProfilePic && (
+              {/* Safely check for recruiterDetails and recruiterProfilePic using optional chaining */}
+              {job.recruiterDetails && job.recruiterProfilePic ? ( // Check if details exist
                 <div className="p-6 bg-gray-50 rounded-t-lg border-b border-gray-300">
                   <div className="flex items-center mb-4">
                     <img
-                      src={userProfilePic}
+                      src={job.recruiterProfilePic}
                       alt="Recruiter"
                       className="w-12 h-12 rounded-full mr-4"
                     />
                     <div>
                       <h4 className="text-lg font-bold text-blue-600">
-                        {recruiterDetails.name}
+                        {job.recruiterDetails.name} {/* Safe access */}
                       </h4>
                       <p className="text-sm text-gray-500">
-                        {recruiterDetails.companyName}
+                        {job.recruiterDetails.companyName}
                       </p>
                     </div>
                   </div>
-                  <div className="text-sm text-gray-600">
-                    <p>{recruiterDetails.companyDiscription}</p>
-                    <p>
-                      <strong>Industry:</strong> {recruiterDetails.industryType}
-                    </p>
-                    <p>
-                      <strong>Office Location:</strong>{" "}
-                      {recruiterDetails.officeLocation}
-                    </p>
-                    <button
-                      className="mt-4 text-blue-500 hover:underline"
-                      onClick={() => handleViewDetails(recruiterDetails.id)}
-                    >
-                      View Details
-                    </button>
-                  </div>
+                  {/* ... other details ... */}
+                  <button
+                    className="mt-4 text-blue-500 hover:underline"
+                    onClick={() => handleViewDetails(job.recruiterDetails!.id)} // Assert non-null
+                  >
+                    View Details
+                  </button>
+                </div>
+              ) : (
+                <div className="p-6 bg-gray-50 rounded-t-lg border-b border-gray-300">
+                  {/* Fallback or empty state when recruiter details are unavailable */}
+                  <p>No recruiter details available.</p>
                 </div>
               )}
+
               <div className="p-6">
                 <p className="text-gray-700 mb-4">{job.description}</p>
                 <div className="mb-4">
@@ -155,3 +162,4 @@ const Match: React.FC = () => {
 };
 
 export default Match;
+//ol

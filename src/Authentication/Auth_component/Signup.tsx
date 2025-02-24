@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { FaSadTear, FaSpinner } from "react-icons/fa"; // Import spinner icon
-import profilepic from "/profilepic.png"; // Static imported image (used as fallback)
+// Static imported image (used as fallback)
 
 const Signup: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -33,11 +33,8 @@ const Signup: React.FC = () => {
     if (profileImage) {
       formData.append("profilpic", profileImage);
     } else {
-      // If no profile image is selected, append the default image
-      const defaultProfilePic = new File([profilepic], "profilepic.png", {
-        type: "image/png",
-      });
-      formData.append("profilpic", defaultProfilePic);
+      // If no profile image is selected, you can either omit the field or handle it differently
+      formData.delete("profilpic"); // Removes the field entirely from the formData
     }
 
     try {
