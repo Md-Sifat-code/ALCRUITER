@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import {
-  FaHome,
-  FaBriefcase,
-  FaBell,
-  FaUserAlt,
-  FaSearch,
-} from "react-icons/fa";
+import { FaBriefcase, FaBell, FaUserAlt, FaSearch } from "react-icons/fa";
+import { IoNewspaper } from "react-icons/io5";
 import { useUser } from "../Context/UserContext";
 // Import axios for HTTP requests
 
@@ -71,19 +66,18 @@ const Navbar: React.FC = () => {
         {/* Middle section: Navigation */}
         <div className="flex flex-row items-center space-x-6">
           {/* Conditionally render Home or Jobs based on user.choose */}
-          {user?.choose === "candidate" && (
-            <NavLink
-              to="/home" // Specify the link for Home
-              className={({ isActive }) =>
-                isActive
-                  ? "flex flex-col items-center text-blue-800"
-                  : "flex flex-col items-center"
-              }
-            >
-              <FaHome size={24} />
-              <span className="text-sm mt-1">Home</span>
-            </NavLink>
-          )}
+
+          <NavLink
+            to="/home" // Specify the link for Home
+            className={({ isActive }) =>
+              isActive
+                ? "flex flex-col items-center text-blue-800"
+                : "flex flex-col items-center"
+            }
+          >
+            <IoNewspaper size={24} />
+            <span className="text-sm mt-1">Feed</span>
+          </NavLink>
 
           {user?.choose === "candidate" && (
             <NavLink

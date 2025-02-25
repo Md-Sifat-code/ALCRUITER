@@ -3,10 +3,43 @@ import { FaMapMarkerAlt, FaIndustry, FaBuilding } from "react-icons/fa";
 import { FaCircleInfo, FaPlus } from "react-icons/fa6";
 import { useUser } from "../Context/UserContext"; // Import the useUser hook
 
+// PostBody Component: Handles the "Read More" functionality
+const PostBody: React.FC<{ body: string }> = ({ body }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleReadMore = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  return (
+    <div>
+      <p
+        className={`text-gray-600 px-4 mb-2 ${
+          !isExpanded ? "line-clamp-6" : ""
+        }`}
+        style={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: !isExpanded ? 6 : "unset",
+        }}
+      >
+        {body}
+      </p>
+
+      {/* Show the 'Read More' or 'Read Less' button */}
+      <button
+        onClick={toggleReadMore}
+        className="text-blue-500 px-4 text-sm mt-[-14px] mb-4"
+      >
+        {isExpanded ? "Read Less" : "Read More"}
+      </button>
+    </div>
+  );
+};
+
 const Recruiter: React.FC = () => {
   const { user, isLoading, error } = useUser(); // Access user from context
   const [showModal, setShowModal] = useState(false);
-
   const [body, setBody] = useState("");
   const [coverPhoto, setCoverPhoto] = useState<any>(null); // State to store the selected cover photo
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,7 +48,6 @@ const Recruiter: React.FC = () => {
   const openModal = () => setShowModal(true);
   const closeModal = () => setShowModal(false);
 
-  // Function to handle the cover photo change
   // Function to handle the cover photo change
   const handleCoverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -192,8 +224,8 @@ const Recruiter: React.FC = () => {
           </p>
         </div>
       </div>
-      <div className="mt-8 flex flex-col justify-center items-center ">
-        <div className="max-w-6xl h-[100px] bgcard w-full bg-transparent flex flex-row items-center rounded-[18px] shadow-2xl px-12 justify-between gap-12">
+      <div className="mt-8  flex flex-col justify-center items-center ">
+        <div className="max-w-6xl h-auto p-4 md:h-[100px] bgcard w-full bg-transparent flex flex-col md:flex-row items-center rounded-[18px] shadow-2xl px-12 justify-between gap-12">
           <button className="px-12 py-3 rounded-[18px] text-black bg-green-600 font-semibold">
             Posts
           </button>
@@ -207,7 +239,7 @@ const Recruiter: React.FC = () => {
       </div>
 
       <div className="mt-8 flex justify-center items-center">
-        <div className="max-w-6xl w-full bg-transparent grid grid-cols-3 gap-12  ">
+        <div className="max-w-6xl w-full bg-transparent grid grid-cols-1 md:grid-cols-3 gap-12  ">
           {/* Displaying Posts Side by Side */}
           <div className="col-span-2 grid grid-cols-1  ">
             <h1 className="text-black font-bold  text-2xl mb-4">Posts</h1>
@@ -231,7 +263,8 @@ const Recruiter: React.FC = () => {
                   </div>
                 </div>
 
-                <p className="text-gray-600 px-4 mb-6">{post.body}</p>
+                {/* Pass the post.body to PostBody component */}
+                <PostBody body={post.body} />
 
                 <img
                   className="w-full rounded-b-[18px]"
@@ -250,7 +283,7 @@ const Recruiter: React.FC = () => {
       {/* Recruitment Modal */}
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center bg-opacity-50 bg-transparent">
-          <div className="bg-white rounded-lg shadow-lg p-8 w-96">
+          <div className="bg-white rounded-lg shadow-lg p-8 w-96 lg:w-[600px]">
             <h3 className="text-2xl font-semibold mb-4">Post a Recruitment</h3>
             <form onSubmit={handleRecruitmentSubmit}>
               <div className="mb-4">

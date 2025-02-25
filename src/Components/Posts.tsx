@@ -26,7 +26,41 @@ interface Post {
   skills: string;
   mail: string;
   user: User;
+  createdDate: string;
+  photo: string;
 }
+const PostBody: React.FC<{ body: string }> = ({ body }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleReadMore = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  return (
+    <div>
+      <p
+        className={`text-gray-600 px-4 mb-2 ${
+          !isExpanded ? "line-clamp-6" : ""
+        }`}
+        style={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: !isExpanded ? 6 : "unset",
+        }}
+      >
+        {body}
+      </p>
+
+      {/* Show the 'Read More' or 'Read Less' button */}
+      <button
+        onClick={toggleReadMore}
+        className="text-blue-500 px-4 text-sm mt-[-14px] mb-4"
+      >
+        {isExpanded ? "Read Less" : "Read More"}
+      </button>
+    </div>
+  );
+};
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]); // State to store fetched posts
@@ -80,18 +114,12 @@ const Posts: React.FC = () => {
           <div
             key={post.id}
             className="max-w-xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden"
-            onClick={() => handlePostClick(post.id)} // Add click handler
+            // Add click handler
           >
             {/* Check if recruiter cover photo exists */}
-            {post.user.recruiter?.coverPhoto && (
-              <img
-                src={post.user.recruiter.coverPhoto}
-                alt={post.user.recruiter.companyName}
-                className="w-full h-56 object-cover"
-              />
-            )}
-            <div className="p-6">
-              <div className="flex items-center space-x-4">
+
+            <div className="">
+              <div className="flex items-center space-x-4 p-4">
                 {/* Check if user profile picture exists */}
                 <img
                   src={post.user.profilpic}
@@ -102,13 +130,19 @@ const Posts: React.FC = () => {
                   <h3 className="text-lg font-semibold text-gray-800">
                     {post.user.username}
                   </h3>
-                  <p className="text-sm text-gray-600">{post.user.email}</p>
+                  <p className="text-sm text-gray-600">
+                    {post.user.email}
+                    <p>{post.createdDate}</p>
+                  </p>
                 </div>
               </div>
-              <h2 className="text-2xl font-semibold text-gray-800 mt-4">
-                {post.title}
-              </h2>
-              <p className="mt-2 text-gray-600">{post.body}</p>
+
+              <PostBody body={post.body} />
+              <img
+                className="w-full rounded-b-[18px]"
+                src={post.photo}
+                alt=""
+              />
 
               {/* Check if recruiter info exists */}
               {post.user.recruiter && (

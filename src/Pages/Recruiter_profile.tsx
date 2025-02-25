@@ -70,7 +70,7 @@ const RecruiterProfile: React.FC = () => {
     formDataToSend.append("coverPhoto", formData.coverPhoto || "");
     formDataToSend.append("companyName", formData.companyName);
     formDataToSend.append("officeLocation", formData.officeLocation);
-    formDataToSend.append("companyDescription", formData.companyDiscription);
+    formDataToSend.append("companyDiscription", formData.companyDiscription);
     formDataToSend.append("industryType", formData.industryType);
     formDataToSend.append("bio", formData.bio); // Add bio to formData
     formDataToSend.append("phoneNumber", formData.phoneNumber);
@@ -239,12 +239,12 @@ const RecruiterProfile: React.FC = () => {
               Company Description
             </label>
             <textarea
-              id="companyDescription"
-              name="companyDescription"
+              id="companyDiscription"
+              name="companyDiscription"
               value={formData.companyDiscription}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              rows={4}
+              rows={8}
             />
           </div>
         </div>
@@ -268,7 +268,7 @@ const RecruiterProfile: React.FC = () => {
         <div className="flex justify-center mt-8">
           <button
             type="submit"
-            className="w-full md:w-1/4 px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full  px-6 py-3 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Submit
           </button>
