@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
 
   return (
     <section className="bg-white">
-      <div className="container mx-auto max-w-7xl flex flex-col md:flex-row justify-between items-center py-1 px-6">
+      <div className="container mx-auto max-w-6xl flex flex-col md:flex-row justify-between items-center py-1 px-6 lg:px-0">
         <div className="flex mb-4 md:mb-0 items-center space-x-4">
           <Link
             to={"/home"}

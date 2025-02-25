@@ -16,7 +16,7 @@ interface FormData {
   coverPhoto: File | null;
   companyName: string;
   officeLocation: string;
-  companyDescription: string;
+  companyDiscription: string;
   industryType: string;
   bio: string; // New field for bio
   phoneNumber: string; // New field for phone number
@@ -28,7 +28,7 @@ const RecruiterProfile: React.FC = () => {
     coverPhoto: null,
     companyName: "",
     officeLocation: "",
-    companyDescription: "",
+    companyDiscription: "",
     industryType: "",
     bio: "", // Initialize bio field
     phoneNumber: "",
@@ -70,12 +70,12 @@ const RecruiterProfile: React.FC = () => {
     formDataToSend.append("coverPhoto", formData.coverPhoto || "");
     formDataToSend.append("companyName", formData.companyName);
     formDataToSend.append("officeLocation", formData.officeLocation);
-    formDataToSend.append("companyDescription", formData.companyDescription);
+    formDataToSend.append("companyDescription", formData.companyDiscription);
     formDataToSend.append("industryType", formData.industryType);
     formDataToSend.append("bio", formData.bio); // Add bio to formData
     formDataToSend.append("phoneNumber", formData.phoneNumber);
     formDataToSend.append("userId", String(user.id)); // Adding userId from context
-
+    console.log(formDataToSend);
     const response = await fetch(
       "https://chakrihub-1.onrender.com/api/recruiters/add",
       {
@@ -241,7 +241,7 @@ const RecruiterProfile: React.FC = () => {
             <textarea
               id="companyDescription"
               name="companyDescription"
-              value={formData.companyDescription}
+              value={formData.companyDiscription}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               rows={4}

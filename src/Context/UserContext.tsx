@@ -10,6 +10,7 @@ interface User {
   recruter: any | null;
   username: string;
   choose: any | null;
+  posts: [];
 }
 
 interface UserContextType {
