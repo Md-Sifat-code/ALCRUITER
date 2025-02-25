@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import ads1 from "/ads-1.png";
+import ads2 from "/ads-3..png";
+import ads3 from "/ads-2.png";
+import ads4 from "/ads-1.png";
 interface JobPost {
   id: number;
   body: string;
+  photo: string;
+  createdDate: string;
+  updatedDate: string;
+
   user: {
     id: number;
     username: string;
@@ -11,12 +18,48 @@ interface JobPost {
     profilpic: string;
     recruter: {
       name: string;
+      id: number;
+      companyDiscription: string;
+      industryType: string;
+      officeLocation: string;
       companyName: string;
       coverPhoto: string;
     };
     choose: string;
   };
 }
+const PostBody: React.FC<{ body: string }> = ({ body }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const toggleReadMore = () => {
+    setIsExpanded((prev) => !prev);
+  };
+
+  return (
+    <div>
+      <p
+        className={`text-gray-600 px-4 mb-2 ${
+          !isExpanded ? "line-clamp-6" : ""
+        }`}
+        style={{
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: !isExpanded ? 6 : "unset",
+        }}
+      >
+        {body}
+      </p>
+
+      {/* Show the 'Read More' or 'Read Less' button */}
+      <button
+        onClick={toggleReadMore}
+        className="text-blue-500 px-4 text-sm mt-[-14px] mb-4"
+      >
+        {isExpanded ? "Read Less" : "Read More"}
+      </button>
+    </div>
+  );
+};
 
 const Jobs: React.FC = () => {
   const { userId } = useParams(); // Get userId from the URL
@@ -77,38 +120,58 @@ const Jobs: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto max-w-7xl py-4">
-      {jobPosts.map((post) => (
-        <div
-          key={post.id}
-          className="border p-6 rounded-md mb-6 shadow-md hover:shadow-xl transition-all duration-300"
-        >
-          <div className="flex items-center mb-4">
-            <img
-              src={post.user.profilpic}
-              alt="Recruiter"
-              className="w-12 h-12 rounded-full mr-4"
-            />
-            <div>
-              <h4 className="text-xl font-semibold">
-                {post.user.recruter.name}
-              </h4>
-              <p className="text-gray-600 text-sm">
-                {post.user.recruter.companyName}
-              </p>
+    <div className="container mx-auto max-w-6xl gap-4 py-4 grid grid-cols-1 md:grid-cols-5">
+      <div className=" col-span-3">
+        {jobPosts.map((post) => (
+          <div
+            key={post.id}
+            className="bgcard p-6 rounded-2xl mb-6 shadow-2xl card flex flex-col "
+          >
+            <div className="flex items-center mb-4">
+              <img
+                src={post.user.profilpic}
+                alt="Recruiter"
+                className="w-[70px] h-[70px] rounded-full mr-4"
+              />
+              <div>
+                <h4 className="text-xl font-semibold">
+                  {post.user.recruter.name}
+                </h4>
+                <p className="text-gray-600 text-sm">{post.user.email}</p>
+              </div>
+            </div>
+            <PostBody body={post.body} />
+
+            {/* Match Candidates Button */}
+            <div className="flex flex-row justify-center items-center">
+              <button
+                onClick={() => handleMatchCandidates(post.id)}
+                className="bg-[#22E580] text-black font-semibold py-2 px-4 rounded-md hover:bg-teal-500 transition duration-200"
+              >
+                Match Candidates
+              </button>
             </div>
           </div>
-          <p className="text-gray-700 mb-4">{post.body}</p>
-
-          {/* Match Candidates Button */}
-          <button
-            onClick={() => handleMatchCandidates(post.id)}
-            className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
-          >
-            Match Candidates
-          </button>
+        ))}
+      </div>
+      <div className=" col-span-2 border-l-1 gap-4 grid grid-cols-1 px-4 ">
+        {/* ads section */}
+        <div>
+          <img src={ads1} alt="" />
         </div>
-      ))}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <img src={ads2} alt="" />
+          </div>
+          <div className="h-full">
+            <img className="h-full" src={ads3} alt="" />
+          </div>
+        </div>
+        <div>
+          <img src={ads4} alt="" />
+        </div>
+        <div></div>
+      </div>
     </div>
   );
 };
