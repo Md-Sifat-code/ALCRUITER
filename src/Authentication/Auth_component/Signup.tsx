@@ -148,11 +148,7 @@ const Signup: React.FC = () => {
             className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
             disabled={loading} // Disable button during loading
           >
-            {loading ? (
-              <FaSpinner className="animate-spin" /> // Show spinning icon during loading
-            ) : (
-              "Sign Up"
-            )}
+            Sign Up
           </button>
 
           {/* Login link */}

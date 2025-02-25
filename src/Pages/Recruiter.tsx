@@ -232,7 +232,7 @@ const Recruiter: React.FC = () => {
           <button className="px-16 py-3 rounded-[18px] text-black bg-gray-300 font-semibold">
             Matched Candidates
           </button>
-          <button className="px-20 py-3 rounded-[18px] text-black bg-gray-300 font-semibold">
+          <button className="px-16 py-3 rounded-[18px] text-black bg-gray-300 font-semibold">
             Recruitment
           </button>
         </div>

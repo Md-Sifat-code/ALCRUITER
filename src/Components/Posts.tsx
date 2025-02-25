@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaSpinner } from "react-icons/fa";
-import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+// import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 // Define the structure of the post and user data
 interface Recruiter {
@@ -67,7 +67,7 @@ const Posts: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true); // Loading state
   const [error, setError] = useState<string | null>(null); // Error state
 
-  const navigate = useNavigate(); // Hook for navigation
+  // const navigate = useNavigate(); // Hook for navigation
 
   useEffect(() => {
     // Fetch posts from API
@@ -102,10 +102,10 @@ const Posts: React.FC = () => {
     return <div>{error}</div>;
   }
 
-  const handlePostClick = (id: number) => {
-    // Navigate to the detailed post page with post id
-    navigate(`/home/post/${id}`);
-  };
+  // const handlePostClick = (id: number) => {
+  //   // Navigate to the detailed post page with post id
+  //   navigate(`/home/post/${id}`);
+  // };
 
   return (
     <section className="">
