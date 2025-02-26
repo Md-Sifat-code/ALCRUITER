@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBriefcase, FaBell, FaUserAlt, FaSearch } from "react-icons/fa";
 import { IoNewspaper } from "react-icons/io5";
 import { useUser } from "../Context/UserContext";
+import { SiHandshakeProtocol } from "react-icons/si";
 // Import axios for HTTP requests
 
 const Navbar: React.FC = () => {
@@ -101,8 +102,8 @@ const Navbar: React.FC = () => {
                   : "flex flex-col items-center"
               }
             >
-              <FaBriefcase size={24} />
-              <span className="text-sm mt-1">Jobs</span>
+              <SiHandshakeProtocol size={24} />
+              <span className="text-sm mt-1">Match</span>
             </NavLink>
           )}
           <NavLink

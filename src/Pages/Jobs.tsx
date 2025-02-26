@@ -121,7 +121,7 @@ const Jobs: React.FC = () => {
 
   return (
     <div className="container mx-auto max-w-6xl gap-4 py-4 grid grid-cols-1 md:grid-cols-5">
-      <div className=" col-span-3">
+      <div className="px-4 md:px-0 col-span-3">
         {jobPosts.map((post) => (
           <div
             key={post.id}
