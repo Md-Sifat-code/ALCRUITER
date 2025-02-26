@@ -146,7 +146,7 @@ const Jobs: React.FC = () => {
             <div className="flex flex-row justify-center items-center">
               <button
                 onClick={() => handleMatchCandidates(post.id)}
-                className="bg-[#22E580] text-black font-semibold py-2 px-4 rounded-md hover:bg-teal-500 transition duration-200"
+                className="bg-[#FA8E8C] text-black font-semibold py-2 px-4 rounded-md hover:bg-teal-500 transition duration-200"
               >
                 Match Candidates
               </button>

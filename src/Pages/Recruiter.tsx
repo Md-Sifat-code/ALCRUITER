@@ -198,7 +198,7 @@ const Recruiter: React.FC = () => {
             <div className="mt-4 mb-6">
               <button
                 onClick={openModal}
-                className="bg-green-500 hover:bg-green-600 text-black font-medium py-2 px-4 rounded-[18px] shadow-md"
+                className="bg-[#FA8E8C] hover:bg-green-600 text-black font-medium py-2 px-4 rounded-[18px] shadow-md"
               >
                 Add Recruitment
               </button>
@@ -226,7 +226,7 @@ const Recruiter: React.FC = () => {
       </div>
       <div className="mt-8  flex flex-col justify-center items-center ">
         <div className="max-w-6xl h-auto p-4 md:h-[100px] bgcard w-full bg-transparent flex flex-col md:flex-row items-center rounded-[18px] shadow-2xl px-12 justify-between gap-12">
-          <button className="px-12 py-3 rounded-[18px] text-black bg-green-600 font-semibold">
+          <button className="px-12 py-3 rounded-[18px] text-black bg-[#FA8E8C] font-semibold">
             Posts
           </button>
           <button className="px-16 py-3 rounded-[18px] text-black bg-gray-300 font-semibold">

@@ -44,7 +44,7 @@ const Navbar: React.FC = () => {
         <div className="flex mb-4 md:mb-0 items-center space-x-4">
           <Link
             to={"/home"}
-            className="bg-blue-900 p-2 text-white font-bold mr-1"
+            className="bg-[#6F9EF6] p-2 text-white font-bold mr-1"
           >
             AL
           </Link>
@@ -120,7 +120,7 @@ const Navbar: React.FC = () => {
           {/* Right section: Profile Icon and Dropdown */}
           <div className="relative">
             <div
-              className="flex bg-blue-800 p-4 rounded-b-full items-center cursor-pointer"
+              className="flex bg-[#6F9EF6] p-4 rounded-b-full items-center cursor-pointer"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Toggle dropdown
             >
               {user ? (

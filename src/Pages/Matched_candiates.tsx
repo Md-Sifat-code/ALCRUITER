@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaCode } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
 import { FaPaperPlane } from "react-icons/fa";
 import { BsRobot } from "react-icons/bs";
@@ -37,14 +38,15 @@ const MatchedCandidates: React.FC = () => {
   const [matchedCandidates, setMatchedCandidates] = useState<
     MatchedCandidate[]
   >([]);
-  const [candidateUser, setCandidateUser] = useState<CandidateUser | null>(
-    null
-  );
+  const [candidateUsers, setCandidateUsers] = useState<CandidateUser[]>([]); // Store multiple candidate users
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [messages, setMessages] = useState<string[]>([]);
   const [newMessage, setNewMessage] = useState("");
+  const [selectedCandidateId, setSelectedCandidateId] = useState<number | null>(
+    null
+  ); // Track selected candidate ID
 
   useEffect(() => {
     const fetchMatchedCandidates = async () => {
@@ -58,7 +60,6 @@ const MatchedCandidates: React.FC = () => {
         const response = await fetch(
           `https://chakrihub-1.onrender.com/api/v1/recruiter/suggestions/${postId}`
         );
-
         if (!response.ok) {
           setError(`Error: ${response.statusText}`);
           setLoading(false);
@@ -84,51 +85,48 @@ const MatchedCandidates: React.FC = () => {
     fetchMatchedCandidates();
   }, [postId]);
 
+  // Fetch candidate user details for all matched candidates
   useEffect(() => {
     const fetchCandidateUser = async (username: string) => {
       try {
         const response = await fetch(
           `https://chakrihub-1.onrender.com/User/search/${username}`
         );
-
         if (!response.ok) {
           setError(`Error: ${response.statusText}`);
           return;
         }
 
         const data = await response.json();
-        console.log("Candidate user data:", data);
-        setCandidateUser(data);
+        setCandidateUsers((prevUsers) => [...prevUsers, data]);
       } catch (error) {
         console.error("Error fetching candidate user:", error);
         setError("Failed to fetch candidate user.");
       }
     };
 
-    // Fetch candidate user details for the first matched candidate (assuming we need the first one)
-    if (matchedCandidates.length > 0) {
-      fetchCandidateUser(matchedCandidates[0].username);
-    }
+    // Call the API for each candidate in the list
+    matchedCandidates.forEach((candidate) => {
+      fetchCandidateUser(candidate.username);
+    });
   }, [matchedCandidates]);
 
   const handleSendMessage = async () => {
-    if (newMessage.trim() !== "") {
-      // Show the message being sent
+    if (newMessage.trim() !== "" && selectedCandidateId) {
       setMessages((prevMessages) => [...prevMessages, `You: ${newMessage}`]);
 
       try {
         // Prepare the query by replacing spaces with %20 to encode the message
         const query = newMessage.trim().replace(/\s+/g, "%20");
+        console.log(selectedCandidateId);
 
-        // Make the GET request to the AI endpoint
         const response = await fetch(
-          `https://chakrihub-1.onrender.com/ai/cv/question/${candidateUser?.id}/${query}`,
+          `https://chakrihub-1.onrender.com/ai/cv/question/${selectedCandidateId}/${query}`,
           {
             method: "GET", // Using GET method
           }
         );
 
-        // Check if the response is ok
         if (!response.ok) {
           setMessages((prevMessages) => [
             ...prevMessages,
@@ -137,10 +135,7 @@ const MatchedCandidates: React.FC = () => {
           return;
         }
 
-        // Get the response body (AI's response)
         const data = await response.text(); // The response is a string
-
-        // Append the AI's response to the messages
         setMessages((prevMessages) => [...prevMessages, `AI: ${data}`]);
       } catch (error) {
         console.error("Error sending message:", error);
@@ -150,13 +145,17 @@ const MatchedCandidates: React.FC = () => {
         ]);
       }
 
-      // Clear the input after sending
       setNewMessage("");
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center space-x-4 py-6">
+        <FaSpinner className="animate-spin text-blue-500 text-4xl" />
+        <span className="text-lg text-gray-600">Loading...</span>
+      </div>
+    );
   }
 
   if (error) {
@@ -166,17 +165,21 @@ const MatchedCandidates: React.FC = () => {
   return (
     <div className="container mx-auto py-6 px-4 md:px-0">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {matchedCandidates.map((candidate) => (
-          <div
-            key={candidate.candidateId}
-            className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 mb-8 hover:shadow-2xl transition-all duration-300 ease-in-out"
-          >
-            {/* Candidate User Info */}
-            {candidateUser &&
-              candidate.username === matchedCandidates[0].username && (
+        {matchedCandidates.map((candidate) => {
+          const candidateUser = candidateUsers.find(
+            (user) => user.username === candidate.username
+          );
+
+          return (
+            <div
+              key={candidate.candidateId}
+              className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-8 hover:shadow-2xl transition-all duration-300 ease-in-out"
+            >
+              {/* Candidate User Info */}
+              {candidateUser && (
                 <div className="mb-6">
                   <div className="flex items-center justify-between space-x-4">
-                    <div className="flex flex-row gap-2 items-center">
+                    <div className="flex items-center space-x-4">
                       <img
                         src={candidateUser.profilpic}
                         alt="Profile"
@@ -199,33 +202,29 @@ const MatchedCandidates: React.FC = () => {
                 </div>
               )}
 
-            {/* Matched Skills */}
-            <div className="mb-6">
-              <h4 className="font-medium text-gray-700">Matched Skills</h4>
-              <ul className="list-disc flex flex-wrap gap-4 items-start justify-start sm:justify-center">
-                {candidate.matchedSkills.map((skill, index) => (
-                  <li
-                    key={index}
-                    className="text-gray-600 flex items-center text-sm"
-                  >
-                    <FaCode className="text-green-500" />
-                    <span>{skill}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              {/* Matched Skills */}
+              <div className="mb-6">
+                <h4 className="font-medium text-gray-700">Matched Skills</h4>
+                <p className="text-gray-600 text-sm">
+                  {candidate.matchedSkills.join(", ")}
+                </p>
+              </div>
 
-            {/* Open Modal Button */}
-            <div className="flex items-center justify-center text-sm text-gray-500">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="px-4 py-2 bg-[#6F9EF6] text-white rounded-full text-sm hover:bg-blue-700 transition-all"
-              >
-                Ask My CV
-              </button>
+              {/* Open Modal Button */}
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() => {
+                    setIsModalOpen(true);
+                    setSelectedCandidateId(candidate.candidateId); // Set selected candidate ID
+                  }}
+                  className="px-4 py-2 bg-[#6F9EF6] text-white rounded-full text-sm hover:bg-blue-700 transition-all"
+                >
+                  Ask My CV
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Modal for Messaging */}
@@ -238,18 +237,31 @@ const MatchedCandidates: React.FC = () => {
             className="bgcard rounded-lg shadow-lg max-w-3xl w-full p-6"
             onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
           >
-            <h2 className="flex flex-row items-center mb-4 gap-2">
-              <BsRobot className="text-blue-800 text-6xl" />
-              <span className="text-sm text-gray-600">
-                I know everything about him—every skill, every experience, every
-                achievement on his CV. I can answer any question confidently and
-                accurately about him according to his CV. Go ahead, ask me
-                anything{" "}
-              </span>
-            </h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="flex flex-row items-center gap-2">
+                <BsRobot className="text-blue-800 text-6xl" />
+                <span className="text-sm text-gray-600">
+                  I know everything about him—every skill, every experience,
+                  every achievement on his CV. I can answer any question
+                  confidently and accurately about him according to his CV. Go
+                  ahead, ask me anything
+                </span>
+              </h2>
+              {/* Close Button */}
+              <button
+                onClick={() => {
+                  setIsModalOpen(false); // Close the modal
+                  window.location.reload(); // Reload the page
+                }}
+                className="text-gray-600 hover:text-gray-800"
+              >
+                <FaTimes className="bg-blue-300 rounded-full p-2" size={36} />
+              </button>
+            </div>
+
             <div className="space-y-4">
               {/* Display messages */}
-              <div className="overflow-y-auto h-96 border border-gray-300 p-4 rounded-lg mb-4">
+              <div className="overflow-y-auto h-96 p-4 rounded-lg mb-4">
                 {messages.length > 0 ? (
                   messages.map((msg, index) => (
                     <div
@@ -270,7 +282,7 @@ const MatchedCandidates: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-400">No messages yet.</div>
+                  <div className="text-gray-400">No messages yet</div>
                 )}
               </div>
 
