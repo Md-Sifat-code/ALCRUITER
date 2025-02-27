@@ -46,7 +46,7 @@ const Candidate: React.FC = () => {
                 {user?.candidate?.fullName}
               </h2>
 
-              <span className="flex items-center bg-amber-600 font-bold text-white text-sm px-2 py-1 rounded-full">
+              <span className="flex items-center bg-amber-400 font-bold text-white text-sm px-2 py-1 rounded-full">
                 <FaStar className="mr-1" />
                 Candidate
               </span>

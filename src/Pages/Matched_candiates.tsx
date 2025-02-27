@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import { FaSpinner } from "react-icons/fa";
 import { CiTimer } from "react-icons/ci";
-import { FaPaperPlane } from "react-icons/fa";
+
 import { BsRobot } from "react-icons/bs";
 
 interface MatchedCandidate {
@@ -149,82 +149,112 @@ const MatchedCandidates: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center space-x-4 py-6">
-        <FaSpinner className="animate-spin text-blue-500 text-4xl" />
-        <span className="text-lg text-gray-600">Loading...</span>
-      </div>
-    );
-  }
-
   if (error) {
     return <div>{error}</div>;
   }
 
   return (
-    <div className="container mx-auto py-6 px-4 md:px-0">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {matchedCandidates.map((candidate) => {
-          const candidateUser = candidateUsers.find(
-            (user) => user.username === candidate.username
-          );
-
-          return (
-            <div
-              key={candidate.candidateId}
-              className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-8 hover:shadow-2xl transition-all duration-300 ease-in-out"
-            >
-              {/* Candidate User Info */}
-              {candidateUser && (
-                <div className="mb-6">
-                  <div className="flex items-center justify-between space-x-4">
-                    <div className="flex items-center space-x-4">
-                      <img
-                        src={candidateUser.profilpic}
-                        alt="Profile"
-                        className="w-16 h-16 rounded-full"
-                      />
-                      <div>
-                        <h5 className="text-xl font-semibold">
-                          {candidateUser.candidate.fullName}
-                        </h5>
-                        <p className="text-sm text-gray-600">
-                          {candidateUser.email}
-                        </p>
+    <div className="container mx-auto max-w-6xl py-6 px-4 md:px-0">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
+        {loading
+          ? Array(6)
+              .fill(0)
+              .map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-8 hover:shadow-2xl transition-all duration-300 ease-in-out animate-pulse"
+                >
+                  {/* Skeleton for Candidate User Info */}
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between space-x-4">
+                      <div className="flex items-center space-x-4">
+                        <div className="w-16 h-16 rounded-full bg-gray-300 animate-pulse" />
+                        <div>
+                          <div className="h-4 w-32 bg-gray-300 animate-pulse mb-2" />
+                          <div className="h-3 w-48 bg-gray-300 animate-pulse" />
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-5 h-5 bg-amber-600 animate-pulse rounded-full" />
+                        <div className="h-3 w-20 bg-gray-300 animate-pulse" />
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <CiTimer className="text-amber-600" />
-                      <span>{candidate.matchPercentage}% Matched</span>
-                    </div>
+                  </div>
+
+                  {/* Skeleton for Matched Skills */}
+                  <div className="mb-6">
+                    <div className="h-4 w-32 bg-gray-300 animate-pulse mb-2" />
+                    <div className="h-3 w-[90%] bg-gray-300 animate-pulse" />
+                  </div>
+
+                  {/* Skeleton for Button */}
+                  <div className="flex items-center justify-center">
+                    <div className="h-10 w-32 bg-[#6F9EF6] animate-pulse rounded-full" />
                   </div>
                 </div>
-              )}
+              ))
+          : matchedCandidates.map((candidate) => {
+              const candidateUser = candidateUsers.find(
+                (user) => user.username === candidate.username
+              );
 
-              {/* Matched Skills */}
-              <div className="mb-6">
-                <h4 className="font-medium text-gray-700">Matched Skills</h4>
-                <p className="text-gray-600 text-sm">
-                  {candidate.matchedSkills.join(", ")}
-                </p>
-              </div>
-
-              {/* Open Modal Button */}
-              <div className="flex items-center justify-center">
-                <button
-                  onClick={() => {
-                    setIsModalOpen(true);
-                    setSelectedCandidateId(candidate.candidateId); // Set selected candidate ID
-                  }}
-                  className="px-4 py-2 bg-[#6F9EF6] text-white rounded-full text-sm hover:bg-blue-700 transition-all"
+              return (
+                <div
+                  key={candidate.candidateId}
+                  className="bg-white border border-gray-200 rounded-lg shadow-lg p-6 mb-8 hover:shadow-2xl transition-all duration-300 ease-in-out"
                 >
-                  Ask My CV
-                </button>
-              </div>
-            </div>
-          );
-        })}
+                  {/* Candidate User Info */}
+                  {candidateUser && (
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between space-x-4">
+                        <div className="flex items-center space-x-4">
+                          <img
+                            src={candidateUser.profilpic}
+                            alt="Profile"
+                            className="w-16 h-16 rounded-full"
+                          />
+                          <div>
+                            <h5 className="text-xl font-semibold">
+                              {candidateUser.candidate.fullName}
+                            </h5>
+                            <p className="text-sm text-gray-600">
+                              {candidateUser.email}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <CiTimer className="text-amber-600" />
+                          <span>{candidate.matchPercentage}% Matched</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Matched Skills */}
+                  <div className="mb-6">
+                    <h4 className="font-medium text-gray-700">
+                      Matched Skills
+                    </h4>
+                    <p className="text-gray-600 text-sm w-[90%]">
+                      {candidate.matchedSkills.join(", ")}
+                    </p>
+                  </div>
+
+                  {/* Open Modal Button */}
+                  <div className="flex items-center justify-center">
+                    <button
+                      onClick={() => {
+                        setIsModalOpen(true);
+                        setSelectedCandidateId(candidate.candidateId); // Set selected candidate ID
+                      }}
+                      className="px-4 py-2 bg-[#6F9EF6] text-white rounded-full text-sm hover:bg-blue-300 transition-all"
+                    >
+                      Ask My CV
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
       </div>
 
       {/* Modal for Messaging */}
@@ -234,11 +264,11 @@ const MatchedCandidates: React.FC = () => {
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="bgcard rounded-lg shadow-lg max-w-3xl w-full p-6"
+            className="bgcard rounded-[18px] shadow-xl max-w-2xl w-full p-6"
             onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
           >
             <div className="flex justify-between items-center mb-4">
-              <h2 className="flex flex-row items-center gap-2">
+              <h2 className="flex flex-row items-center border-b border-gray-300 py-2 gap-2">
                 <BsRobot className="text-blue-800 text-6xl" />
                 <span className="text-sm text-gray-600">
                   I know everything about him—every skill, every experience,
@@ -261,7 +291,7 @@ const MatchedCandidates: React.FC = () => {
 
             <div className="space-y-4">
               {/* Display messages */}
-              <div className="overflow-y-auto h-96 p-4 rounded-lg mb-4">
+              <div className="overflow-y-auto  h-[500px] p-4 rounded-[18px] mb-4">
                 {messages.length > 0 ? (
                   messages.map((msg, index) => (
                     <div
@@ -282,24 +312,24 @@ const MatchedCandidates: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-400">No messages yet</div>
+                  <div className="text-gray-400"></div>
                 )}
               </div>
 
               {/* Input for new message */}
-              <div className="relative w-full">
+              <div className="relative flex justify-center items-center ">
                 <input
                   type="text"
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  className="w-full p-3 pl-4 pr-12 border border-gray-300 rounded-lg"
+                  className="w-full md:w-[70%] bg-white p-3 pl-4 pr-12 focus:outline-none focus:border-transparent rounded-4xl"
                   placeholder="Type your message..."
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-600 hover:text-blue-700"
+                  className="absolute right-26 bg-[#6F9EF6] font-bold px-2 text-white py-1 rounded-full top-1/2 transform -translate-y-1/2 "
                 >
-                  <FaPaperPlane size={20} />
+                  Send
                 </button>
               </div>
             </div>

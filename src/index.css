@@ -1,12 +1,37 @@
 @import "tailwindcss";
 
 body{
-  background-color: #F3F3FD;
+  background-color: #f0f0f0;
 }
 
 .bgcard{
-  background-color: #FFFEF7;
+  background-color: #f0f0f0;
 }
 .btncol{
   background-color: #22E580;
+}
+.skeleton {
+  background-color: #e0e0e0;
+  animation: skeleton-loading 1.5s infinite ease-in-out;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
+}
+/* Hide the scrollbar but allow scrolling */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
 }

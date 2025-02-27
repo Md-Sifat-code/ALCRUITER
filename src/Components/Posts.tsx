@@ -89,15 +89,6 @@ const Posts: React.FC = () => {
     fetchPosts();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center space-x-2">
-        <FaSpinner className="animate-spin text-blue-500 w-6 h-6" />
-        <p className="text-lg font-semibold text-gray-600">Loading...</p>
-      </div>
-    );
-  }
-
   if (error) {
     return <div>{error}</div>;
   }
@@ -110,33 +101,62 @@ const Posts: React.FC = () => {
   return (
     <section className="">
       <div className="space-y-6">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="max-w-xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden"
-            // Add click handler
-          >
-            {/* Check if recruiter cover photo exists */}
-
-            <div className="">
+        {loading ? (
+          // Skeleton Loader
+          <div className="max-w-xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden">
+            {/* Profile Section */}
+            <div className="flex items-center space-x-4 p-4">
+              <div className="skeleton h-12 w-12 rounded-full"></div>{" "}
+              {/* Profile picture skeleton */}
+              <div className="flex flex-col space-y-2">
+                <div className="skeleton h-5 w-32"></div>{" "}
+                {/* Username skeleton */}
+                <div className="skeleton h-4 w-40"></div> {/* Email skeleton */}
+              </div>
+            </div>
+            {/* Post Body */}
+            <div className="skeleton h-16 w-full mb-4"></div>{" "}
+            {/* Post body skeleton */}
+            {/* Post Image */}
+            <div className="skeleton h-48 w-full rounded-b-[18px]"></div>{" "}
+            {/* Post image skeleton */}
+            {/* Recruiter Info (conditionally displayed) */}
+            <div className="mt-4">
+              <div className="skeleton h-5 w-40"></div>{" "}
+              {/* Recruiter name skeleton */}
+              <div className="skeleton h-4 w-56"></div>{" "}
+              {/* Company name skeleton */}
+              <div className="skeleton h-4 w-60"></div>{" "}
+              {/* Industry and office location skeleton */}
+            </div>
+          </div>
+        ) : (
+          // Real Post Content
+          posts.map((post) => (
+            <div
+              key={post.id}
+              className="max-w-xl mx-auto bg-white shadow-lg rounded-xl overflow-hidden"
+              // Add click handler
+            >
+              {/* Profile Section */}
               <div className="flex items-center space-x-4 p-4">
-                {/* Check if user profile picture exists */}
                 <img
                   src={post.user.profilpic}
                   alt={post.user.username}
                   className="w-12 h-12 rounded-full object-cover"
                 />
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800">
+                  <h3 className="text-lg font-semibold text-[#555555]">
                     {post.user.username}
                   </h3>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-[#555555]">
                     {post.user.email}
                     <p>{post.createdDate}</p>
                   </p>
                 </div>
               </div>
 
+              {/* Post Body */}
               <PostBody body={post.body} />
               <img
                 className="w-full rounded-b-[18px]"
@@ -144,24 +164,24 @@ const Posts: React.FC = () => {
                 alt=""
               />
 
-              {/* Check if recruiter info exists */}
+              {/* Recruiter Info (conditionally displayed) */}
               {post.user.recruiter && (
                 <div className="mt-4">
-                  <h3 className="font-semibold text-gray-700">
+                  <h3 className="font-semibold text-[#555555]">
                     Recruiter: {post.user.recruiter.name}
                   </h3>
-                  <p className="text-gray-600">
+                  <p className="text-[#555555]">
                     {post.user.recruiter.companyName}
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-[#555555]">
                     {post.user.recruiter.industryType} -{" "}
                     {post.user.recruiter.officeLocation}
                   </p>
                 </div>
               )}
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </section>
   );

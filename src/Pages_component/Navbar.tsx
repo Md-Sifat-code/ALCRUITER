@@ -3,7 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBriefcase, FaBell, FaUserAlt, FaSearch } from "react-icons/fa";
 import { IoNewspaper } from "react-icons/io5";
 import { useUser } from "../Context/UserContext";
-import { SiHandshakeProtocol } from "react-icons/si";
+import { FaHandshake } from "react-icons/fa";
 // Import axios for HTTP requests
 
 const Navbar: React.FC = () => {
@@ -65,14 +65,14 @@ const Navbar: React.FC = () => {
         </div>
 
         {/* Middle section: Navigation */}
-        <div className="flex flex-row items-center space-x-6">
+        <div className="flex flex-row items-center gap-8 space-x-6">
           {/* Conditionally render Home or Jobs based on user.choose */}
 
           <NavLink
             to="/home" // Specify the link for Home
             className={({ isActive }) =>
               isActive
-                ? "flex flex-col items-center text-blue-800"
+                ? "flex flex-col items-center text-blue-600"
                 : "flex flex-col items-center"
             }
           >
@@ -85,11 +85,11 @@ const Navbar: React.FC = () => {
               to={`/home/matchjob/${user.candidate.id}`} // Pass the candidateId in the URL
               className={({ isActive }) =>
                 isActive
-                  ? "flex flex-col items-center text-blue-800"
+                  ? "flex flex-col items-center text-blue-600"
                   : "flex flex-col items-center"
               }
             >
-              <FaBriefcase size={24} />
+              <FaBriefcase className=" rotate-45" size={24} />
               <span className="text-sm mt-1">Match Job</span>
             </NavLink>
           )}
@@ -98,11 +98,11 @@ const Navbar: React.FC = () => {
               to={`/home/jobs/${user.id}`} // Pass the user ID to the Jobs page
               className={({ isActive }) =>
                 isActive
-                  ? "flex flex-col items-center text-blue-800"
+                  ? "flex flex-col items-center text-blue-600"
                   : "flex flex-col items-center"
               }
             >
-              <SiHandshakeProtocol size={24} />
+              <FaHandshake className="" size={24} />
               <span className="text-sm mt-1">Match</span>
             </NavLink>
           )}
@@ -115,7 +115,7 @@ const Navbar: React.FC = () => {
             }
           >
             <FaBell size={24} />
-            <span className="text-sm mt-1">Notifications</span>
+            <span className="text-sm mt-1">Notice</span>
           </NavLink>
           {/* Right section: Profile Icon and Dropdown */}
           <div className="relative">

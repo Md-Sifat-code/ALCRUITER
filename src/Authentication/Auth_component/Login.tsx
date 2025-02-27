@@ -46,7 +46,7 @@ const Login: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col gap-6 items-center justify-center bg-gray-50">
       <h1 className="flex flex-row items-center">
-        <p className="bg-blue-900 p-2 text-white font-bold mr-1">AL</p>
+        <p className="bg-[#6F9EF6] p-2 text-white font-bold mr-1">AL</p>
         <span className="bg-transparent font-bold">CRUITER</span>
       </h1>
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
@@ -82,7 +82,7 @@ const Login: React.FC = () => {
         <button
           type="button"
           onClick={handleLogin}
-          className="w-full bg-blue-800 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition"
+          className="w-full bg-[#6F9EF6] text-white font-bold py-2 rounded-md  transition"
           disabled={isLoading}
         >
           {isLoading ? "Logging in..." : "Login"}

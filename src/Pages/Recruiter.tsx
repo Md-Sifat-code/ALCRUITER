@@ -156,7 +156,7 @@ const Recruiter: React.FC = () => {
               <h2 className="text-2xl  font-bold text-gray-800 ">
                 {recruiter?.name || "Company Name"} {/* Display Company Name */}
               </h2>
-              <span className="flex items-center bg-red-600 font-bold text-white text-sm px-2 py-1 rounded-full">
+              <span className="flex items-center bg-[#6F9EF6] font-bold text-white text-sm px-2 py-1 rounded-full">
                 <FaBuilding className="mr-1" />
                 Recruiter
               </span>
@@ -198,7 +198,7 @@ const Recruiter: React.FC = () => {
             <div className="mt-4 mb-6">
               <button
                 onClick={openModal}
-                className="bg-[#FA8E8C] hover:bg-green-600 text-black font-medium py-2 px-4 rounded-[18px] shadow-md"
+                className="bg-[#6F9EF6]  text-white font-medium py-2 px-4 rounded-[18px] shadow-md"
               >
                 Add Recruitment
               </button>
@@ -226,7 +226,7 @@ const Recruiter: React.FC = () => {
       </div>
       <div className="mt-8  flex flex-col justify-center items-center ">
         <div className="max-w-6xl h-auto p-4 md:h-[100px] bgcard w-full bg-transparent flex flex-col md:flex-row items-center rounded-[18px] shadow-2xl px-12 justify-between gap-12">
-          <button className="px-12 py-3 rounded-[18px] text-black bg-[#FA8E8C] font-semibold">
+          <button className="px-12 py-3 rounded-[18px] text-white bg-[#6F9EF6] font-semibold">
             Posts
           </button>
           <button className="px-16 py-3 rounded-[18px] text-black bg-gray-300 font-semibold">
