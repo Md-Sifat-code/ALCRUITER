@@ -113,17 +113,21 @@ const MatchedCandidates: React.FC = () => {
 
   const handleSendMessage = async () => {
     if (newMessage.trim() !== "" && selectedCandidateId) {
+      // Add the user message to the chat
       setMessages((prevMessages) => [...prevMessages, `You: ${newMessage}`]);
 
-      try {
-        // Prepare the query by replacing spaces with %20 to encode the message
-        const query = newMessage.trim().replace(/\s+/g, "%20");
-        console.log(selectedCandidateId);
+      // Clear the input field
+      setNewMessage("");
 
+      // Temporarily add the "AI: Thinking..." message while waiting for the AI response
+      setMessages((prevMessages) => [...prevMessages, `AI: Thinking...`]);
+
+      try {
+        const query = newMessage.trim().replace(/\s+/g, "%20");
         const response = await fetch(
           `https://chakrihub-1.onrender.com/ai/cv/question/${selectedCandidateId}/${query}`,
           {
-            method: "GET", // Using GET method
+            method: "GET",
           }
         );
 
@@ -135,8 +139,18 @@ const MatchedCandidates: React.FC = () => {
           return;
         }
 
-        const data = await response.text(); // The response is a string
-        setMessages((prevMessages) => [...prevMessages, `AI: ${data}`]);
+        const data = await response.text();
+
+        // Replace the "Thinking..." message with the actual AI response
+        setMessages((prevMessages) => {
+          // Find the last "Thinking..." message and replace it
+          const newMessages = [...prevMessages];
+          const lastMessageIndex = newMessages.lastIndexOf("AI: Thinking...");
+          if (lastMessageIndex !== -1) {
+            newMessages[lastMessageIndex] = `AI: ${data}`;
+          }
+          return newMessages;
+        });
       } catch (error) {
         console.error("Error sending message:", error);
         setMessages((prevMessages) => [
@@ -144,8 +158,6 @@ const MatchedCandidates: React.FC = () => {
           "Error: Failed to get a response from AI.",
         ]);
       }
-
-      setNewMessage("");
     }
   };
 
@@ -264,7 +276,7 @@ const MatchedCandidates: React.FC = () => {
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="bgcard rounded-[18px] shadow-xl max-w-2xl w-full p-6"
+            className="bgcard rounded-[18px] shadow-xl w-full md:w-2/3 lg:w-1/2 p-6"
             onClick={(e) => e.stopPropagation()} // Prevent modal from closing when clicking inside
           >
             <div className="flex justify-between items-center mb-4">
@@ -291,7 +303,7 @@ const MatchedCandidates: React.FC = () => {
 
             <div className="space-y-4">
               {/* Display messages */}
-              <div className="overflow-y-auto  h-[500px] p-4 rounded-[18px] mb-4">
+              <div className="overflow-y-auto h-[500px] p-4 rounded-[18px] mb-4">
                 {messages.length > 0 ? (
                   messages.map((msg, index) => (
                     <div
@@ -312,12 +324,12 @@ const MatchedCandidates: React.FC = () => {
                     </div>
                   ))
                 ) : (
-                  <div className="text-gray-400"></div>
+                  <div className="text-gray-400">No messages yet.</div>
                 )}
               </div>
 
               {/* Input for new message */}
-              <div className="relative flex justify-center items-center ">
+              <div className="relative flex justify-center items-center">
                 <input
                   type="text"
                   value={newMessage}
@@ -327,7 +339,7 @@ const MatchedCandidates: React.FC = () => {
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="absolute right-26 bg-[#6F9EF6] font-bold px-2 text-white py-1 rounded-full top-1/2 transform -translate-y-1/2 "
+                  className="absolute right-2 md:right-20 lg:right-36 bg-[#6F9EF6] font-bold px-2 text-white py-1 rounded-full top-1/2 transform -translate-y-1/2 "
                 >
                   Send
                 </button>

@@ -28,6 +28,14 @@ interface JobPost {
     choose: string;
   };
 }
+const Skeleton: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <div
+      className={`skeleton ${className}`}
+      style={{ width: "100%", height: "100%", borderRadius: "8px" }}
+    ></div>
+  );
+};
 const PostBody: React.FC<{ body: string }> = ({ body }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -108,7 +116,39 @@ const Jobs: React.FC = () => {
   }, [userId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="container mx-auto max-w-6xl gap-4 py-4 grid grid-cols-1 md:grid-cols-5">
+        {/* Loading Skeleton for Posts */}
+        <div className="px-4 md:px-0 col-span-3">
+          {[...Array(3)].map((_, index) => (
+            <div
+              key={index}
+              className="bgcard p-6 rounded-2xl mb-6 shadow-2xl card flex flex-col"
+            >
+              <div className="flex items-center mb-4">
+                <Skeleton className="w-[70px] h-[70px] rounded-full mr-4" />
+                <div>
+                  <Skeleton className="h-4 w-[200px] mb-2" />
+                  <Skeleton className="h-4 w-[150px]" />
+                </div>
+              </div>
+              <Skeleton className="h-24 w-full mb-4" />
+              <Skeleton className="h-8 w-[200px]" />
+            </div>
+          ))}
+        </div>
+
+        {/* Loading Skeleton for Ads */}
+        <div className="col-span-2 border-l-1 gap-4 grid grid-cols-1 px-4">
+          <Skeleton className="h-[200px]" />
+          <div className="grid grid-cols-2 gap-3">
+            <Skeleton className="h-[150px]" />
+            <Skeleton className="h-[150px]" />
+          </div>
+          <Skeleton className="h-[200px]" />
+        </div>
+      </div>
+    );
   }
 
   if (error) {

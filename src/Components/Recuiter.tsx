@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; // To get recruiter ID from URL params
-import { FaSpinner } from "react-icons/fa6";
 
 interface Recruiter {
   id: number;
@@ -41,9 +40,28 @@ const Recruiter: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen space-x-2">
-        <FaSpinner className="animate-spin text-blue-500 w-6 h-6" />
-        <p className="text-lg font-semibold text-gray-600">Loading...</p>
+      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden p-6 mt-8">
+        {/* Skeleton for Cover Photo */}
+        <div className="skeleton h-72 w-full bg-gray-300 rounded-2xl"></div>
+
+        {/* Skeleton for Recruiter Info Section */}
+        <div className="mt-8">
+          <div className="flex items-center space-x-6">
+            <div className="skeleton w-20 h-20 rounded-full bg-gray-300"></div>
+            <div className="space-y-4">
+              <div className="skeleton h-6 w-48 bg-gray-300"></div>
+              <div className="skeleton h-4 w-32 bg-gray-300"></div>
+              <div className="skeleton h-4 w-48 bg-gray-300"></div>
+            </div>
+          </div>
+
+          {/* Skeleton for About Company Section */}
+          <div className="mt-6 space-y-4">
+            <div className="skeleton h-6 w-48 bg-gray-300"></div>
+            <div className="skeleton h-4 w-72 bg-gray-300"></div>
+            <div className="skeleton h-4 w-72 bg-gray-300"></div>
+          </div>
+        </div>
       </div>
     );
   }

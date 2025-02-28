@@ -121,9 +121,23 @@ const Recruiter: React.FC = () => {
   }, [user?.id]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex skeleton justify-center mt-8 items-start space-x-4">
+        <div className="max-w-6xl skeleton w-full bgcard rounded-[18px] shadow-2xl overflow-hidden">
+          <div className="w-full skeleton h-56" />
+          <div className="px-12 skeleton text-start mt-14">
+            <div className="w-32 skeleton h-32 rounded-full" />
+            <div className="w-40 skeleton h-6 mt-4" />
+            <div className="w-60 skeleton h-6 mt-2" />
+            <div className="w-80 skeleton h-6 mt-2" />
+            <div className="w-60 skeleton h-6 mt-6" />
+            <div className="w-80 skeleton h-6 mt-6" />
+            <div className="w-36 skeleton h-10 mt-6" />
+          </div>
+        </div>
+      </div>
+    );
   }
-
   if (error) {
     return <div>Error: {error}</div>;
   }
