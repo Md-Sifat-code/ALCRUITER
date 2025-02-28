@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaMapMarkerAlt, FaIndustry, FaBuilding } from "react-icons/fa";
 import { FaCircleInfo, FaPlus } from "react-icons/fa6";
 import { useUser } from "../Context/UserContext"; // Import the useUser hook
+import Toptalents from "../Components/Toptalents";
 
 // PostBody Component: Handles the "Read More" functionality
 const PostBody: React.FC<{ body: string }> = ({ body }) => {
@@ -276,6 +277,8 @@ const Recruiter: React.FC = () => {
           </div>
           <div className="border-l-1 px-12 py-3 border-gray-500">
             <h1 className="text-black font-bold text-2xl">Top talents</h1>
+            {/* Top Talents compnent will be here */}
+            <Toptalents />
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import { FaSpinner } from "react-icons/fa";
+
 import { CiTimer } from "react-icons/ci";
 
 import { BsRobot } from "react-icons/bs";

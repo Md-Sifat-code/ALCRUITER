@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSpinner } from "react-icons/fa";
+
 // import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 
 // Define the structure of the post and user data
