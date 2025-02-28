@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FaBriefcase, FaBell, FaUserAlt, FaSearch } from "react-icons/fa";
 import { IoNewspaper } from "react-icons/io5";
 import { useUser } from "../Context/UserContext";
 import { FaHandshake } from "react-icons/fa";
-// Import axios for HTTP requests
 
 const Navbar: React.FC = () => {
   const { user, logout } = useUser();
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState(""); // Track the search input
+  const dropdownRef = useRef<HTMLDivElement | null>(null); // Create a ref for the dropdown
 
   const handleLogout = () => {
     sessionStorage.clear();
@@ -33,10 +33,28 @@ const Navbar: React.FC = () => {
   // Handle search when search icon is clicked
   const handleSearch = async () => {
     if (searchQuery) {
-      // Navigate to userprofile page with the username
       navigate(`/home/userprofile`, { state: { username: searchQuery } });
     }
   };
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false); // Close the dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <section className="bg-white">
@@ -59,15 +77,13 @@ const Navbar: React.FC = () => {
             <FaSearch
               size={20}
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 cursor-pointer"
-              onClick={handleSearch} // Trigger search on icon click
+              onClick={handleSearch}
             />
           </div>
         </div>
 
         {/* Middle section: Navigation */}
         <div className="flex flex-row items-center gap-8 space-x-6">
-          {/* Conditionally render Home or Jobs based on user.choose */}
-
           <NavLink
             to="/home" // Specify the link for Home
             className={({ isActive }) =>
@@ -75,6 +91,7 @@ const Navbar: React.FC = () => {
                 ? "flex flex-col items-center text-blue-600"
                 : "flex flex-col items-center"
             }
+            end // The "end" keyword ensures that the link is only active when the exact match is found.
           >
             <IoNewspaper size={24} />
             <span className="text-sm mt-1">Feed</span>
@@ -136,7 +153,10 @@ const Navbar: React.FC = () => {
 
             {/* Dropdown Menu */}
             {isDropdownOpen && (
-              <div className="absolute z-10 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg">
+              <div
+                ref={dropdownRef} // Attach the ref to the dropdown container
+                className="absolute z-10 right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg"
+              >
                 <button
                   onClick={handleProfileNavigation}
                   className="block w-full text-left p-2 text-blue-600 hover:bg-gray-100"
