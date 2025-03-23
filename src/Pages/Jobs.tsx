@@ -86,7 +86,7 @@ const Jobs: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://chakrihub-1.onrender.com/Post/user/${userId}`
+          `https://chakrihub-mhh5.onrender.com/Post/user/${userId}`
         );
 
         // Check if response is ok (status 200-299)

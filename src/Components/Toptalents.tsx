@@ -36,7 +36,7 @@ const Toptalents: React.FC = () => {
     const fetchTopCandidates = async () => {
       try {
         const response = await fetch(
-          "https://chakrihub-1.onrender.com/api/v1/recruiter/top-candidates"
+          "https://chakrihub-mhh5.onrender.com/api/v1/recruiter/top-candidates"
         );
         if (response.ok) {
           const data = await response.json();
@@ -55,7 +55,7 @@ const Toptalents: React.FC = () => {
       try {
         const userDetailsPromises = candidates.map(async (candidate) => {
           const response = await fetch(
-            `https://chakrihub-1.onrender.com/User/search/${candidate.username}`
+            `https://chakrihub-mhh5.onrender.com/User/search/${candidate.username}`
           );
           if (response.ok) {
             const data = await response.json();

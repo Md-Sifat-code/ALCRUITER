@@ -30,7 +30,7 @@ const Match: React.FC = () => {
   useEffect(() => {
     if (candidateId) {
       fetch(
-        `https://chakrihub-1.onrender.com/api/v1/recruiter/candidates/${candidateId}/suggestions`
+        `https://chakrihub-mhh5.onrender.com/api/v1/recruiter/candidates/${candidateId}/suggestions`
       )
         .then((response) => response.json())
         .then((data) => {
@@ -63,7 +63,7 @@ const Match: React.FC = () => {
   }, [candidateId]);
 
   const fetchRecruiterDetails = (jobId: number): Promise<any> => {
-    return fetch(`https://chakrihub-1.onrender.com/Post/${jobId}`)
+    return fetch(`https://chakrihub-mhh5.onrender.com/Post/${jobId}`)
       .then((response) => response.json())
       .then((data) => {
         return { recruter: data.user.recruter, profilpic: data.user.profilpic }; // Return recruiter details and profile picture

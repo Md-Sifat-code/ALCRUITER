@@ -19,7 +19,7 @@ const User_profile: React.FC = () => {
       const fetchUserProfile = async () => {
         try {
           const response = await axios.get(
-            `https://chakrihub-1.onrender.com/User/search/${username}`
+            `https://chakrihub-mhh5.onrender.com/User/search/${username}`
           );
           setUserProfile(response.data);
           setLoading(false);

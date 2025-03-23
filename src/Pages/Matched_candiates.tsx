@@ -58,7 +58,7 @@ const MatchedCandidates: React.FC = () => {
 
       try {
         const response = await fetch(
-          `https://chakrihub-1.onrender.com/api/v1/recruiter/suggestions/${postId}`
+          `https://chakrihub-mhh5.onrender.com/api/v1/recruiter/suggestions/${postId}`
         );
         if (!response.ok) {
           setError(`Error: ${response.statusText}`);
@@ -90,7 +90,7 @@ const MatchedCandidates: React.FC = () => {
     const fetchCandidateUser = async (username: string) => {
       try {
         const response = await fetch(
-          `https://chakrihub-1.onrender.com/User/search/${username}`
+          `https://chakrihub-mhh5.onrender.com/User/search/${username}`
         );
         if (!response.ok) {
           setError(`Error: ${response.statusText}`);
@@ -125,7 +125,7 @@ const MatchedCandidates: React.FC = () => {
       try {
         const query = newMessage.trim().replace(/\s+/g, "%20");
         const response = await fetch(
-          `https://chakrihub-1.onrender.com/ai/cv/question/${selectedCandidateId}/${query}`,
+          `https://chakrihub-mhh5.onrender.com/ai/cv/question/${selectedCandidateId}/${query}`,
           {
             method: "GET",
           }

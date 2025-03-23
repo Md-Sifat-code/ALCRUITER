@@ -73,7 +73,9 @@ const Posts: React.FC = () => {
     // Fetch posts from API
     const fetchPosts = async () => {
       try {
-        const response = await fetch("https://chakrihub-1.onrender.com/Post");
+        const response = await fetch(
+          "https://chakrihub-mhh5.onrender.com/Post"
+        );
         if (!response.ok) {
           throw new Error("Failed to fetch posts");
         }

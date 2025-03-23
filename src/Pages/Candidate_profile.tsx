@@ -99,7 +99,7 @@ const CandidateProfile: React.FC = () => {
     formDataToSubmit.append("bio", formData.bio); // Append new field
     formDataToSubmit.append("about", formData.about);
 
-    fetch("https://chakrihub-1.onrender.com/api/candidates/add", {
+    fetch("https://chakrihub-mhh5.onrender.com/api/candidates/add", {
       method: "POST",
       body: formDataToSubmit,
     })

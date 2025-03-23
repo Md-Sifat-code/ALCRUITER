@@ -36,7 +36,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 
     try {
       const response = await axios.get<User>(
-        `https://chakrihub-1.onrender.com/User/search/${username}`
+        `https://chakrihub-mhh5.onrender.com/User/search/${username}`
       );
 
       setUser(response.data); // Store the user data from the response

@@ -77,7 +77,7 @@ const RecruiterProfile: React.FC = () => {
     formDataToSend.append("userId", String(user.id)); // Adding userId from context
     console.log(formDataToSend);
     const response = await fetch(
-      "https://chakrihub-1.onrender.com/api/recruiters/add",
+      "https://chakrihub-mhh5.onrender.com/api/recruiters/add",
       {
         method: "POST",
         body: formDataToSend,
