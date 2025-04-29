@@ -39,7 +39,7 @@ const Signup: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://chakrihub-mhh5.onrender.com/User/add",
+        "https://chakrihub-1-sgbz.onrender.com/User/add",
         {
           method: "POST",
           body: formData,

@@ -40,7 +40,7 @@ const Post_Details: React.FC = () => {
       if (!id) return;
       try {
         const response = await fetch(
-          `https://chakrihub-mhh5.onrender.com/Post/${id}`
+          `https://chakrihub-1-sgbz.onrender.com/Post/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch post");

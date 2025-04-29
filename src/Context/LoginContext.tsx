@@ -30,7 +30,7 @@ export const LoginProvider = ({ children }: { children: React.ReactNode }) => {
 
     try {
       const response = await axios.post<LoginResponse>(
-        "https://chakrihub-mhh5.onrender.com/Log",
+        "https://chakrihub-1-sgbz.onrender.com/Log",
         { username, password } // Changed to use username
       );
 

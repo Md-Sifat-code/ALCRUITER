@@ -21,7 +21,7 @@ const Recruiter: React.FC = () => {
       if (!id) return;
       try {
         const response = await fetch(
-          `https://chakrihub-mhh5.onrender.com/api/recruiters/${id}`
+          `https://chakrihub-1-sgbz.onrender.com/api/recruiters/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch recruiter");

@@ -39,7 +39,7 @@ const Profile_view: React.FC = () => {
   const fetchUserProfile = async () => {
     try {
       const response = await fetch(
-        `https://chakrihub-mhh5.onrender.com/User/search/${username}`
+        `https://chakrihub-1-sgbz.onrender.com/User/search/${username}`
       );
 
       if (!response.ok) {

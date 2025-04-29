@@ -36,7 +36,7 @@ const Toptalents: React.FC = () => {
     const fetchTopCandidates = async () => {
       try {
         const response = await fetch(
-          "https://chakrihub-mhh5.onrender.com/api/v1/recruiter/top-candidates"
+          "https://chakrihub-1-sgbz.onrender.com/api/v1/recruiter/top-candidates"
         );
         if (response.ok) {
           const data = await response.json();

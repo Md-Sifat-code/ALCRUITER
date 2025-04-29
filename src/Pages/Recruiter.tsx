@@ -77,7 +77,7 @@ const Recruiter: React.FC = () => {
 
     try {
       const response = await fetch(
-        "https://chakrihub-mhh5.onrender.com/Post/add",
+        "https://chakrihub-1-sgbz.onrender.com/Post/add",
         {
           method: "POST",
           body: formData, // Send the form data with the file and text
@@ -103,7 +103,7 @@ const Recruiter: React.FC = () => {
       if (user?.id) {
         try {
           const response = await fetch(
-            `https://chakrihub-mhh5.onrender.com/Post/user/${user.id}`
+            `https://chakrihub-1-sgbz.onrender.com/Post/user/${user.id}`
           );
           if (response.ok) {
             const data = await response.json();
